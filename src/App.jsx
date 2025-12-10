@@ -2,25 +2,6 @@ import { useState, useEffect } from 'react';
 import AboutSection from './components/AboutSection';
 import ExperiencesSection from './components/ExperiencesSection';
 
-const GoldenFlower = ({ className }) => (
-  <svg viewBox="0 0 100 100" className={className} fill="currentColor">
-    <g transform="translate(50,50)">
-      {[0, 60, 120, 180, 240, 300].map((angle, i) => (
-        <ellipse
-          key={i}
-          cx="0"
-          cy="-18"
-          rx="12"
-          ry="20"
-          transform={`rotate(${angle})`}
-          opacity="0.9"
-        />
-      ))}
-      <circle cx="0" cy="0" r="10" />
-    </g>
-  </svg>
-);
-
 const GoldenParticles = () => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none">
     {[...Array(40)].map((_, i) => {
@@ -186,9 +167,13 @@ export default function HouseOfAya() {
                 ))}
               </div>
 
-              {/* Golden Flower */}
+              {/* Logo */}
               <div className={`${isLoaded ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '0.6s' }}>
-                <GoldenFlower className="w-8 h-8 lg:w-10 lg:h-10 text-[#f4d03f] animate-breathe drop-shadow-[0_0_8px_rgba(244,208,63,0.8)]" />
+                <img
+                  src="/images/logo pn.png"
+                  alt="House of Aya"
+                  className="w-8 h-8 lg:w-10 lg:h-10 animate-breathe drop-shadow-[0_0_8px_rgba(244,208,63,0.8)]"
+                />
               </div>
             </div>
           </div>

@@ -1,22 +1,3 @@
-const GoldenFlower = ({ className }) => (
-  <svg viewBox="0 0 100 100" className={className} fill="currentColor">
-    <g transform="translate(50,50)">
-      {[0, 60, 120, 180, 240, 300].map((angle, i) => (
-        <ellipse
-          key={i}
-          cx="0"
-          cy="-18"
-          rx="12"
-          ry="20"
-          transform={`rotate(${angle})`}
-          opacity="0.9"
-        />
-      ))}
-      <circle cx="0" cy="0" r="10" />
-    </g>
-  </svg>
-);
-
 export default function AboutSection() {
   return (
     <section className="relative py-20 lg:py-32 bg-gradient-to-b from-[#b8c9a4] to-[#d4ddc9]">
@@ -57,7 +38,11 @@ export default function AboutSection() {
         <div className="grid md:grid-cols-3 gap-8 lg:gap-12 mb-20">
           <div className="text-center">
             <div className="mb-4">
-              <GoldenFlower className="w-12 h-12 mx-auto text-[#f4d03f] animate-breathe" />
+              <img
+                src="/images/logo pn.png"
+                alt="AYA"
+                className="w-12 h-12 mx-auto animate-breathe drop-shadow-lg"
+              />
             </div>
             <h3 className="font-display text-2xl font-light text-[#6b7c5e] mb-3">Beauty</h3>
             <p className="font-body text-sm lg:text-base text-[#8b7355]/80 leading-relaxed">
@@ -67,7 +52,11 @@ export default function AboutSection() {
 
           <div className="text-center">
             <div className="mb-4">
-              <GoldenFlower className="w-12 h-12 mx-auto text-[#f4d03f] animate-breathe" />
+              <img
+                src="/images/logo pn.png"
+                alt="AYA"
+                className="w-12 h-12 mx-auto animate-breathe drop-shadow-lg"
+              />
             </div>
             <h3 className="font-display text-2xl font-light text-[#6b7c5e] mb-3">Power</h3>
             <p className="font-body text-sm lg:text-base text-[#8b7355]/80 leading-relaxed">
@@ -77,7 +66,11 @@ export default function AboutSection() {
 
           <div className="text-center">
             <div className="mb-4">
-              <GoldenFlower className="w-12 h-12 mx-auto text-[#f4d03f] animate-breathe" />
+              <img
+                src="/images/logo pn.png"
+                alt="AYA"
+                className="w-12 h-12 mx-auto animate-breathe drop-shadow-lg"
+              />
             </div>
             <h3 className="font-display text-2xl font-light text-[#6b7c5e] mb-3">Balance</h3>
             <p className="font-body text-sm lg:text-base text-[#8b7355]/80 leading-relaxed">

@@ -1,22 +1,3 @@
-const GoldenFlower = ({ className }) => (
-  <svg viewBox="0 0 100 100" className={className} fill="currentColor">
-    <g transform="translate(50,50)">
-      {[0, 60, 120, 180, 240, 300].map((angle, i) => (
-        <ellipse
-          key={i}
-          cx="0"
-          cy="-18"
-          rx="12"
-          ry="20"
-          transform={`rotate(${angle})`}
-          opacity="0.9"
-        />
-      ))}
-      <circle cx="0" cy="0" r="10" />
-    </g>
-  </svg>
-);
-
 const experiences = [
   {
     id: 1,
@@ -87,7 +68,11 @@ export default function ExperiencesSection() {
               {/* Content */}
               <div className="p-8 lg:p-10">
                 <div className="flex items-center gap-3 mb-4">
-                  <GoldenFlower className="w-8 h-8 text-[#f4d03f] animate-breathe" />
+                  <img
+                    src="/images/logo pn.png"
+                    alt="AYA"
+                    className="w-8 h-8 animate-breathe drop-shadow-lg"
+                  />
                   <h3 className="font-display text-3xl lg:text-4xl font-light text-[#6b7c5e]">
                     {experience.title}
                   </h3>
