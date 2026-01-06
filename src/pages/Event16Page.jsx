@@ -1,5 +1,6 @@
 import EventInvitation from '../components/EventInvitation';
 
+// Event 16 - January 16, 2026 at 16:00
 export default function Event16Page() {
   return (
     <EventInvitation
