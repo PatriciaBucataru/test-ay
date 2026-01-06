@@ -60,18 +60,28 @@ function getClientIP(req) {
 // Save to JSON backup
 async function saveToBackup(data, eventId) {
   try {
-    const timestamp = new Date().toISOString();
-    const filename = `rsvp-backup-${eventId}-${timestamp}.json`;
+    // Skip backup if token is not available
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+      console.warn('⚠️ BLOB_READ_WRITE_TOKEN not found, skipping backup');
+      return false;
+    }
 
-    await put(filename, JSON.stringify(data, null, 2), {
+    const timestamp = new Date().toISOString();
+    const filename = `rsvp-backup/${eventId}/${timestamp}.json`;
+
+    // Note: Don't pass token manually on Vercel - it uses env automatically
+    const blob = await put(filename, JSON.stringify(data, null, 2), {
       access: 'public',
-      token: process.env.BLOB_READ_WRITE_TOKEN,
     });
 
-    console.log(`✅ Backup saved: ${filename}`);
+    console.log(`✅ Backup saved: ${blob.url}`);
     return true;
   } catch (error) {
-    console.error('❌ Backup failed:', error.message);
+    console.error('❌ Backup failed:', {
+      message: error.message,
+      eventId: eventId,
+      hasToken: !!process.env.BLOB_READ_WRITE_TOKEN
+    });
     return false;
   }
 }
