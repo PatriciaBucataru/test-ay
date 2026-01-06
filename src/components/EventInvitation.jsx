@@ -42,17 +42,45 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
     lineHeight: '1',
   };
 
+  // Client-side validation
+  const validateName = (name) => {
+    const nameRegex = /^[a-zA-ZăâîșțĂÂÎȘȚ\s\-]{2,50}$/;
+    return nameRegex.test(name.trim());
+  };
+
+  const validatePhone = (phone) => {
+    const phoneRegex = /^(\+?40|0)?7[0-9]{8}$/;
+    const cleanPhone = phone.replace(/[\s\-\.]/g, '');
+    return phoneRegex.test(cleanPhone);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate fields
+    // Validate empty fields
     if (!formData.nume || !formData.prenume || !formData.telefon) {
-      setSubmitMessage('Te rugăm să completezi toate câmpurile');
+      setSubmitMessage('❌ Te rugăm să completezi toate câmpurile');
+      return;
+    }
+
+    // Client-side validation for better UX
+    if (!validateName(formData.nume)) {
+      setSubmitMessage('❌ Numele poate conține doar litere (2-50 caractere)');
+      return;
+    }
+
+    if (!validateName(formData.prenume)) {
+      setSubmitMessage('❌ Prenumele poate conține doar litere (2-50 caractere)');
+      return;
+    }
+
+    if (!validatePhone(formData.telefon)) {
+      setSubmitMessage('❌ Numărul de telefon nu este valid. Format: 07XX XXX XXX');
       return;
     }
 
     setIsSubmitting(true);
-    setSubmitMessage('');
+    setSubmitMessage('⏳ Se trimite confirmarea...');
 
     try {
       const response = await fetch(apiEndpoint, {
@@ -66,14 +94,19 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
       const data = await response.json();
 
       if (response.ok) {
-        setSubmitMessage(`Mulțumim pentru confirmare! Ne vedem pe ${eventDate}!`);
+        setSubmitMessage(`✅ Mulțumim pentru confirmare! Ne vedem pe ${eventDate}!`);
         setFormData({ nume: '', prenume: '', telefon: '' });
       } else {
-        setSubmitMessage(data.error || 'A apărut o eroare. Te rugăm să încerci din nou.');
+        // Friendly error messages
+        if (data.error.includes('Prea multe cereri')) {
+          setSubmitMessage('⏰ Ai trimis prea multe cereri. Te rugăm să încerci din nou peste o oră.');
+        } else {
+          setSubmitMessage(`❌ ${data.error}`);
+        }
       }
     } catch (error) {
       console.error('Error submitting RSVP:', error);
-      setSubmitMessage('A apărut o eroare. Te rugăm să încerci din nou.');
+      setSubmitMessage('❌ Nu s-a putut trimite confirmarea. Verifică conexiunea la internet și încearcă din nou.');
     } finally {
       setIsSubmitting(false);
     }
@@ -133,6 +166,30 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
             transform: translateY(-25px) translateX(-20px);
             opacity: 0.9;
           }
+        }
+
+        @keyframes spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .animate-fadeIn {
+          animation: fadeIn 0.4s ease-out;
         }
 
         @font-face {
@@ -290,13 +347,28 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
               </div>
             </div>
 
-            {/* Submit Message */}
+            {/* Submit Message with smooth animation */}
             {submitMessage && (
               <div
-                className="text-center mt-4 text-sm font-light"
+                className="text-center mt-4 text-sm font-light animate-fadeIn"
                 style={{
-                  color: submitMessage.includes('Mulțumim') ? colors.goldPrimary : '#ff6b6b',
-                  textShadow: '0 1px 1px rgba(0, 0, 0, 0.6)'
+                  color: submitMessage.includes('✅')
+                    ? colors.goldPrimary
+                    : submitMessage.includes('⏳')
+                      ? colors.goldSecondary
+                      : '#ff8888',
+                  textShadow: '0 1px 2px rgba(0, 0, 0, 0.7)',
+                  padding: '12px 16px',
+                  borderRadius: '8px',
+                  backgroundColor: 'rgba(96, 130, 93, 0.3)',
+                  border: `1px solid ${
+                    submitMessage.includes('✅')
+                      ? colors.goldPrimary
+                      : submitMessage.includes('⏳')
+                        ? colors.goldSecondary
+                        : '#ff6b6b'
+                  }`,
+                  backdropFilter: 'blur(4px)'
                 }}
               >
                 {submitMessage}
@@ -307,21 +379,41 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
               <button
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className="font-serif uppercase tracking-wider transition duration-200 hover:opacity-90"
+                className="font-serif uppercase tracking-wider transition-all duration-300 hover:scale-105 active:scale-95"
                 style={{
-                  backgroundColor: colors.goldPrimary,
+                  backgroundColor: isSubmitting ? colors.goldSecondary : colors.goldPrimary,
                   color: colors.green,
-                  boxShadow: '0 0 15px rgba(237, 205, 103, 0.6), 0 2px 4px rgba(0, 0, 0, 0.3)',
-                  padding: '6px 20px',
+                  boxShadow: isSubmitting
+                    ? '0 0 10px rgba(235, 227, 134, 0.4)'
+                    : '0 0 15px rgba(237, 205, 103, 0.6), 0 2px 4px rgba(0, 0, 0, 0.3)',
+                  padding: '8px 24px',
                   fontSize: '13px',
                   borderRadius: '8px',
                   border: 'none',
                   fontWeight: '600',
-                  opacity: isSubmitting ? 0.6 : 1,
-                  cursor: isSubmitting ? 'not-allowed' : 'pointer'
+                  opacity: isSubmitting ? 0.85 : 1,
+                  cursor: isSubmitting ? 'wait' : 'pointer',
+                  minWidth: '140px',
+                  position: 'relative',
+                  overflow: 'hidden'
                 }}
               >
-                {isSubmitting ? 'Se trimite...' : 'Trimite RSVP'}
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                  {isSubmitting && (
+                    <span
+                      style={{
+                        display: 'inline-block',
+                        width: '12px',
+                        height: '12px',
+                        border: `2px solid ${colors.green}`,
+                        borderTopColor: 'transparent',
+                        borderRadius: '50%',
+                        animation: 'spin 0.8s linear infinite'
+                      }}
+                    />
+                  )}
+                  {isSubmitting ? 'Se trimite...' : 'Trimite RSVP'}
+                </span>
               </button>
             </div>
           </div>
