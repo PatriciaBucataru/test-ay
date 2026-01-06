@@ -6,13 +6,13 @@ export default function ComingSoonPage() {
 
   useEffect(() => {
     setIsLoaded(true);
-    const newParticles = Array.from({ length: 30 }, (_, i) => ({
+    const newParticles = Array.from({ length: 20 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: Math.random() * 4 + 2,
-      duration: Math.random() * 6 + 8,
-      delay: Math.random() * 3
+      size: Math.random() * 3 + 1.5,
+      duration: Math.random() * 8 + 10,
+      delay: Math.random() * 4
     }));
     setParticles(newParticles);
   }, []);
@@ -26,7 +26,7 @@ export default function ComingSoonPage() {
   return (
     <div
       className="min-h-screen flex items-center justify-center relative overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #c8d5b9 0%, #d4ddc9 50%, #b8c9a4 100%)' }}
+      style={{ background: 'linear-gradient(135deg, #8b9e7d 0%, #6b7c5e 50%, #5a6b4d 100%)' }}
     >
       <style>{`
         @keyframes float {
@@ -50,12 +50,12 @@ export default function ComingSoonPage() {
 
         @keyframes pulse {
           0%, 100% {
-            opacity: 0.6;
+            opacity: 0.4;
             transform: translate(-50%, -50%) scale(1);
           }
           50% {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1.1);
+            opacity: 0.7;
+            transform: translate(-50%, -50%) scale(1.05);
           }
         }
 
@@ -88,10 +88,10 @@ export default function ComingSoonPage() {
             top: `${particle.y}%`,
             width: `${particle.size}px`,
             height: `${particle.size}px`,
-            background: 'radial-gradient(circle, rgba(237, 205, 103, 0.8) 0%, rgba(255, 248, 220, 0.6) 40%, rgba(237, 205, 103, 0.3) 100%)',
+            background: 'radial-gradient(circle, rgba(237, 205, 103, 0.5) 0%, rgba(255, 248, 220, 0.4) 40%, rgba(237, 205, 103, 0.2) 100%)',
             animation: `float ${particle.duration}s ease-in-out infinite`,
             animationDelay: `${particle.delay}s`,
-            boxShadow: '0 0 15px rgba(237, 205, 103, 0.5)',
+            boxShadow: '0 0 10px rgba(237, 205, 103, 0.3)',
           }}
         />
       ))}
@@ -104,15 +104,15 @@ export default function ComingSoonPage() {
             <div
               className="absolute inset-0 rounded-full"
               style={{
-                width: '180px',
-                height: '180px',
+                width: '160px',
+                height: '160px',
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
-                background: 'radial-gradient(circle, rgba(255, 248, 220, 0.5) 0%, rgba(237, 205, 103, 0.4) 25%, rgba(255, 248, 220, 0.25) 50%, transparent 75%)',
-                animation: 'pulse 3s ease-in-out infinite',
-                filter: 'blur(15px)',
-                boxShadow: '0 0 50px rgba(237, 205, 103, 0.6), 0 0 80px rgba(255, 248, 220, 0.4)'
+                background: 'radial-gradient(circle, rgba(255, 248, 220, 0.4) 0%, rgba(237, 205, 103, 0.3) 25%, rgba(255, 248, 220, 0.2) 50%, transparent 75%)',
+                animation: 'pulse 4s ease-in-out infinite',
+                filter: 'blur(12px)',
+                boxShadow: '0 0 40px rgba(237, 205, 103, 0.5), 0 0 60px rgba(255, 248, 220, 0.3)'
               }}
             />
 
@@ -120,14 +120,14 @@ export default function ComingSoonPage() {
             <div
               className="absolute inset-0 rounded-full"
               style={{
-                width: '130px',
-                height: '130px',
+                width: '120px',
+                height: '120px',
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
-                background: 'radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(237, 205, 103, 0.5) 35%, rgba(255, 248, 220, 0.3) 60%, transparent 80%)',
-                animation: 'pulse 3s ease-in-out infinite reverse',
-                filter: 'blur(8px)',
+                background: 'radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(237, 205, 103, 0.4) 35%, rgba(255, 248, 220, 0.25) 60%, transparent 80%)',
+                animation: 'pulse 4s ease-in-out infinite reverse',
+                filter: 'blur(6px)',
               }}
             />
 
