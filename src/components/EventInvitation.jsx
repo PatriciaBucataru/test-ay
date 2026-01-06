@@ -1,16 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", apiEndpoint }) => {
   const [formData, setFormData] = useState({ nume: '', prenume: '', telefon: '' });
   const [particles, setParticles] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
+  const [scrollY, setScrollY] = useState(0);
+  
+  const logoRef = useRef(null);
+  const headerRef = useRef(null);
+  const bodyRef = useRef(null);
+  const quoteRef = useRef(null);
+  const formRef = useRef(null);
+  const footerRef = useRef(null);
 
-  // Define colors directly
+  // Adjusted colors - green more yellow/pale
   const colors = {
-    green: '#60825d',
+    green: '#6b8768',
     goldPrimary: '#edcd67',
-    goldSecondary: '#ebe386'
+    goldSecondary: '#f0db8e'
   };
 
   // Generate light particles
@@ -24,6 +32,31 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
       delay: Math.random() * 3
     }));
     setParticles(newParticles);
+  }, []);
+
+  // Scroll animation observer
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observerCallback = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-slideUp');
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    const elements = [logoRef, headerRef, bodyRef, quoteRef, formRef, footerRef];
+    elements.forEach(ref => {
+      if (ref.current) observer.observe(ref.current);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   const primaryGoldStyle = { color: colors.goldPrimary };
@@ -57,30 +90,28 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate empty fields
     if (!formData.nume || !formData.prenume || !formData.telefon) {
-      setSubmitMessage('❌ Te rugăm să completezi toate câmpurile');
+      setSubmitMessage('Te rugăm să completezi toate câmpurile');
       return;
     }
 
-    // Client-side validation for better UX
     if (!validateName(formData.nume)) {
-      setSubmitMessage('❌ Numele poate conține doar litere (2-50 caractere)');
+      setSubmitMessage('Numele poate conține doar litere (2-50 caractere)');
       return;
     }
 
     if (!validateName(formData.prenume)) {
-      setSubmitMessage('❌ Prenumele poate conține doar litere (2-50 caractere)');
+      setSubmitMessage('Prenumele poate conține doar litere (2-50 caractere)');
       return;
     }
 
     if (!validatePhone(formData.telefon)) {
-      setSubmitMessage('❌ Numărul de telefon nu este valid. Format: 07XX XXX XXX');
+      setSubmitMessage('Numărul de telefon nu este valid. Format: 07XX XXX XXX');
       return;
     }
 
     setIsSubmitting(true);
-    setSubmitMessage('⏳ Se trimite confirmarea...');
+    setSubmitMessage('Se trimite confirmarea...');
 
     try {
       const response = await fetch(apiEndpoint, {
@@ -94,36 +125,36 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
       const data = await response.json();
 
       if (response.ok) {
-        setSubmitMessage(`✅ Mulțumim pentru confirmare! Ne vedem pe ${eventDate}!`);
+        setSubmitMessage(`Mulțumim pentru confirmare! Ne vedem pe ${eventDate}!`);
         setFormData({ nume: '', prenume: '', telefon: '' });
       } else {
-        // Friendly error messages
         if (data.error.includes('Prea multe cereri')) {
-          setSubmitMessage('⏰ Ai trimis prea multe cereri. Te rugăm să încerci din nou peste o oră.');
+          setSubmitMessage('Ai trimis prea multe cereri. Te rugăm să încerci din nou peste o oră.');
         } else {
-          setSubmitMessage(`❌ ${data.error}`);
+          setSubmitMessage(data.error);
         }
       }
     } catch (error) {
       console.error('Error submitting RSVP:', error);
-      setSubmitMessage('❌ Nu s-a putut trimite confirmarea. Verifică conexiunea la internet și încearcă din nou.');
+      setSubmitMessage('Nu s-a putut trimite confirmarea. Verifică conexiunea la internet și încearcă din nou.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const inputStyle = {
-    border: 'none',
-    borderBottom: `1px solid ${colors.goldPrimary}`,
+    border: `2.5px solid ${colors.goldPrimary}`,
     color: colors.goldPrimary,
-    backgroundColor: 'transparent',
-    padding: '10px 4px',
-    fontSize: '16px',
+    backgroundColor: 'rgba(237, 205, 103, 0.08)',
+    padding: '14px 8px',
+    fontSize: '17px',
     width: '100%',
-    textShadow: '0 1px 1px rgba(0, 0, 0, 0.817)',
+    textShadow: '0 2px 3px rgba(0, 0, 0, 0.6)',
     outline: 'none',
-    boxShadow: 'none',
-    fontFamily: 'inherit'
+    boxShadow: '0 1px 4px rgba(237, 205, 103, 0.2)',
+    fontFamily: 'inherit',
+    fontWeight: '500',
+    borderRadius: '8px'
   };
 
   return (
@@ -188,8 +219,23 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
           }
         }
 
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
         .animate-fadeIn {
           animation: fadeIn 0.4s ease-out;
+        }
+
+        .animate-slideUp {
+          animation: slideUp 0.8s ease-out forwards;
         }
 
         @font-face {
@@ -199,8 +245,12 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
           font-style: normal;
         }
 
-        .text-shadow-subtle {
-          text-shadow: 0 1px 1px rgba(0, 0, 0, 0.817);
+        .text-shadow-strong {
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+        }
+
+        .text-shadow-medium {
+          text-shadow: 0 2px 3px rgba(0, 0, 0, 0.7);
         }
 
         .gold-input {
@@ -210,17 +260,26 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
         }
 
         .gold-input::placeholder {
-          color: #ebe386;
-          opacity: 0.75;
+          color: #f0db8e;
+          opacity: 0.7;
           font-style: italic;
-          font-size: 15px;
+          font-size: 16px;
         }
 
         .gold-input:focus {
-          border: none !important;
-          border-bottom: 1px solid #edcd67 !important;
+          border: 2.5px solid #edcd67 !important;
           outline: none !important;
-          box-shadow: none !important;
+          box-shadow: 0 2px 8px rgba(237, 205, 103, 0.4) !important;
+          background-color: rgba(237, 205, 103, 0.12) !important;
+        }
+
+        .info-box {
+          background: rgba(96, 135, 104, 0.3);
+          backdrop-filter: blur(4px);
+          border: 1px solid rgba(237, 205, 103, 0.5);
+          border-radius: 12px;
+          padding: 16px;
+          margin-top: 20px;
         }
       `}</style>
 
@@ -228,19 +287,19 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
         className="flex flex-col items-center text-center space-y-6 font-serif shadow-2xl relative z-10"
         style={{
           ...cardStyle,
-          width: '400px',
+          width: '420px',
           maxWidth: '90vw',
           borderRadius: '32px',
           padding: '48px 40px',
           boxShadow: '0 0 60px rgba(237, 205, 103, 0.3), 0 0 100px rgba(255, 248, 220, 0.2), 0 20px 40px rgba(0, 0, 0, 0.3)',
           background: `linear-gradient(135deg,
             ${colors.green} 0%,
-            rgba(96, 130, 93, 0.95) 50%,
+            rgba(107, 135, 104, 0.95) 50%,
             ${colors.green} 100%)`
         }}
       >
         {/* Logo */}
-        <div className="mb-2">
+        <div ref={logoRef} className="mb-2 opacity-0">
           <div
             className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 flex items-center justify-center relative"
             style={{
@@ -263,28 +322,28 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
         </div>
 
         {/* Header */}
-        <div className="space-y-1">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl tracking-widest font-serif font-light text-shadow-subtle" style={primaryGoldStyle}>
+        <div ref={headerRef} className="space-y-1 opacity-0">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl tracking-widest font-serif font-light text-shadow-strong" style={primaryGoldStyle}>
             HOUSE OF AYA
           </h1>
-          <p className="text-xs sm:text-sm tracking-[0.2em] font-sans uppercase opacity-90 text-shadow-subtle">
+          <p className="text-xs sm:text-sm tracking-[0.2em] font-sans uppercase opacity-90 text-shadow-medium">
             Manifest of Light
           </p>
         </div>
 
         {/* Event Title */}
-        <div className="pt-2 space-y-2">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif tracking-wide text-shadow-subtle" style={primaryGoldStyle}>
+        <div className="pt-2 space-y-2 opacity-0" ref={headerRef}>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif tracking-wide text-shadow-strong" style={primaryGoldStyle}>
             {eventName}
           </h2>
-          <div className="text-base sm:text-lg lg:text-xl font-light tracking-wider opacity-90 text-shadow-subtle" style={primaryGoldStyle}>
+          <div className="text-lg sm:text-xl lg:text-2xl font-medium tracking-wider text-shadow-strong" style={primaryGoldStyle}>
             <p>{eventDate}</p>
             <p>{eventTime}</p>
           </div>
         </div>
 
         {/* Body Text */}
-        <div className="space-y-4 text-base sm:text-lg leading-relaxed font-light opacity-95 px-2 text-shadow-subtle">
+        <div ref={bodyRef} className="space-y-4 text-[17px] sm:text-[19px] leading-relaxed font-normal px-2 text-shadow-medium opacity-0">
           <p>
             Te invităm cu drag să pășești în interiorul tău,
             odată cu primii pași în House of Aya.
@@ -298,24 +357,57 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
         </div>
 
         {/* Quote */}
-        <div className="pt-2 space-y-2">
-          <h3 className="uppercase tracking-widest text-base sm:text-lg font-serif text-shadow-subtle">
+        <div ref={quoteRef} className="pt-2 space-y-2 opacity-0">
+          <h3 className="uppercase tracking-widest text-base sm:text-lg font-serif text-shadow-strong" style={primaryGoldStyle}>
             Mesajul Spiritual al Zilei:
           </h3>
-          <p className="italic text-base sm:text-lg lg:text-xl font-light text-shadow-subtle">
+          <p className="italic text-[17px] sm:text-[19px] lg:text-xl font-normal text-shadow-medium leading-relaxed">
             „Începuturile sunt porți. Când le treci <br/>
             cu inimă deschisă, lumina se așază în tine."
           </p>
         </div>
 
+        {/* Divider */}
+        <div className="w-full px-8 py-2">
+          <div 
+            style={{
+              height: '2px',
+              background: `linear-gradient(to right, transparent, ${colors.goldPrimary}, transparent)`,
+              boxShadow: `0 0 8px rgba(237, 205, 103, 0.4)`
+            }}
+          />
+        </div>
+
+        {/* Location & Dress Code */}
+        <div className="w-full space-y-3 opacity-0" ref={quoteRef}>
+          <div className="info-box">
+            <h4 className="uppercase tracking-wider text-sm font-serif mb-2 text-shadow-medium" style={primaryGoldStyle}>
+              Locație
+            </h4>
+            <p className="text-[16px] font-normal text-shadow-medium">
+              Madrigalului nr. 58<br/>
+              București, Sector 1
+            </p>
+          </div>
+          
+          <div className="info-box">
+            <h4 className="uppercase tracking-wider text-sm font-serif mb-2 text-shadow-medium" style={primaryGoldStyle}>
+              Dress Code
+            </h4>
+            <p className="text-[16px] font-normal text-shadow-medium">
+              Soft white | Sage | Nude | Gold accents
+            </p>
+          </div>
+        </div>
+
         {/* RSVP Form */}
-        <div className="w-full pt-6 px-2 sm:px-4">
-          <h3 className="uppercase tracking-widest text-lg sm:text-xl font-serif mb-6 text-shadow-subtle" style={primaryGoldStyle}>
+        <div ref={formRef} className="w-full pt-6 px-2 sm:px-4 opacity-0">
+          <h3 className="uppercase tracking-widest text-xl sm:text-2xl font-serif mb-6 text-shadow-strong" style={primaryGoldStyle}>
             Confirmă Prezența
           </h3>
           <div>
-            <div className="space-y-4">
-              <div className="mb-5">
+            <div className="space-y-5">
+              <div>
                 <input
                   type="text"
                   placeholder="Nume"
@@ -325,7 +417,7 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
                   className="font-serif gold-input"
                 />
               </div>
-              <div className="mb-5">
+              <div>
                 <input
                   type="text"
                   placeholder="Prenume"
@@ -347,24 +439,24 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
               </div>
             </div>
 
-            {/* Submit Message with smooth animation */}
+            {/* Submit Message */}
             {submitMessage && (
               <div
-                className="text-center mt-4 text-sm font-light animate-fadeIn"
+                className="text-center mt-5 text-[15px] font-medium animate-fadeIn"
                 style={{
-                  color: submitMessage.includes('✅')
+                  color: submitMessage.includes('Mulțumim')
                     ? colors.goldPrimary
-                    : submitMessage.includes('⏳')
+                    : submitMessage.includes('Se trimite')
                       ? colors.goldSecondary
                       : '#ff8888',
-                  textShadow: '0 1px 2px rgba(0, 0, 0, 0.7)',
-                  padding: '12px 16px',
-                  borderRadius: '8px',
-                  backgroundColor: 'rgba(96, 130, 93, 0.3)',
+                  textShadow: '0 2px 3px rgba(0, 0, 0, 0.8)',
+                  padding: '14px 18px',
+                  borderRadius: '10px',
+                  backgroundColor: 'rgba(107, 135, 104, 0.4)',
                   border: `1px solid ${
-                    submitMessage.includes('✅')
+                    submitMessage.includes('Mulțumim')
                       ? colors.goldPrimary
-                      : submitMessage.includes('⏳')
+                      : submitMessage.includes('Se trimite')
                         ? colors.goldSecondary
                         : '#ff6b6b'
                   }`,
@@ -384,16 +476,16 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
                   backgroundColor: isSubmitting ? colors.goldSecondary : colors.goldPrimary,
                   color: colors.green,
                   boxShadow: isSubmitting
-                    ? '0 0 10px rgba(235, 227, 134, 0.4)'
+                    ? '0 0 10px rgba(240, 219, 142, 0.4)'
                     : '0 0 15px rgba(237, 205, 103, 0.6), 0 2px 4px rgba(0, 0, 0, 0.3)',
-                  padding: '8px 24px',
-                  fontSize: '13px',
+                  padding: '10px 28px',
+                  fontSize: '14px',
                   borderRadius: '8px',
                   border: 'none',
-                  fontWeight: '600',
+                  fontWeight: '700',
                   opacity: isSubmitting ? 0.85 : 1,
                   cursor: isSubmitting ? 'wait' : 'pointer',
-                  minWidth: '140px',
+                  minWidth: '150px',
                   position: 'relative',
                   overflow: 'hidden'
                 }}
@@ -420,17 +512,19 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
         </div>
 
         {/* Footer */}
-        <div className="w-full pt-4 pb-2">
+        <div ref={footerRef} className="w-full pt-4 pb-2 opacity-0">
           <div className="mb-4 text-center">
-            <p className="text-lg sm:text-xl mb-2 text-shadow-subtle">Te așteaptă:</p>
-            <div className="space-y-1 text-base sm:text-lg font-light text-shadow-subtle">
+            <p className="text-xl sm:text-2xl mb-3 text-shadow-strong" style={primaryGoldStyle}>
+              Te așteaptă:
+            </p>
+            <div className="space-y-1 text-[17px] sm:text-[18px] font-normal text-shadow-medium">
               <p>Tur în prezență și tăcere frumoasă</p>
               <p>Micro-experiențe</p>
               <p>Lagree & Yoga</p>
             </div>
           </div>
           <div className="flex justify-end w-full mt-8">
-            <span className="transform -rotate-6 block text-shadow-subtle" style={elegantSignatureStyle}>
+            <span className="transform -rotate-6 block text-shadow-strong" style={elegantSignatureStyle}>
               Cecilia
             </span>
           </div>
