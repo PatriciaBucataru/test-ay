@@ -62,7 +62,16 @@ export default function ComingSoonPage() {
         @keyframes fadeIn {
           from {
             opacity: 0;
-            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
           }
           to {
             opacity: 1;
@@ -98,7 +107,13 @@ export default function ComingSoonPage() {
 
       <div className="relative z-10 text-center px-6">
         {/* Logo with Halo */}
-        <div className="mb-8 flex justify-center">
+        <div
+          className="mb-8 flex justify-center opacity-0"
+          style={{
+            animation: 'fadeIn 1.2s ease-out forwards',
+            animationDelay: '0.2s'
+          }}
+        >
           <div className="relative">
             {/* Outer Halo */}
             <div
@@ -155,7 +170,13 @@ export default function ComingSoonPage() {
         </div>
 
         {/* Brand Text */}
-        <div className="space-y-4 mb-12">
+        <div
+          className="space-y-4 mb-12 opacity-0"
+          style={{
+            animation: 'fadeInUp 1s ease-out forwards',
+            animationDelay: '0.5s'
+          }}
+        >
           <h1
             className="font-display text-5xl sm:text-6xl lg:text-7xl font-light tracking-wide"
             style={{ color: colors.goldPrimary, textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}
@@ -171,7 +192,13 @@ export default function ComingSoonPage() {
         </div>
 
         {/* Coming Soon Message */}
-        <div className="space-y-6">
+        <div
+          className="space-y-6 opacity-0"
+          style={{
+            animation: 'fadeInUp 1s ease-out forwards',
+            animationDelay: '0.8s'
+          }}
+        >
           <div
             className="inline-block px-8 py-4 rounded-2xl"
             style={{
