@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ComingSoonPage from './pages/ComingSoonPage';
 import HomePage from './pages/HomePage';
 import TermsPage from './pages/TermsPage';
 import PrivacyPage from './pages/PrivacyPage';
@@ -97,13 +98,17 @@ export default function App() {
       `}</style>
 
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/terms" element={<TermsPage />} />
-        <Route path="/privacy" element={<PrivacyPage />} />
-        <Route path="/event-15-ianuarie" element={<Event15Page />} />
-        <Route path="/event-16-ianuarie" element={<Event16Page />} />
-        <Route path="/event-17-ianuarie" element={<Event17Page />} />
+        {/* Public Routes - Coming Soon & Events */}
+        <Route path="/" element={<ComingSoonPage />} />
+        <Route path="/15-ianuarie" element={<Event15Page />} />
+        <Route path="/16-ianuarie" element={<Event16Page />} />
+        <Route path="/17-ianuarie" element={<Event17Page />} />
+
+        {/* Hidden Routes - Will be enabled when site is ready */}
+        {/* <Route path="/home" element={<HomePage />} /> */}
+        {/* <Route path="/contact" element={<ContactPage />} /> */}
+        {/* <Route path="/terms" element={<TermsPage />} /> */}
+        {/* <Route path="/privacy" element={<PrivacyPage />} /> */}
       </Routes>
     </Router>
   );

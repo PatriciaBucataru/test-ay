@@ -9,6 +9,7 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
   
   const logoRef = useRef(null);
   const headerRef = useRef(null);
+  const dividerRef = useRef(null);
   const bodyRef = useRef(null);
   const quoteRef = useRef(null);
   const formRef = useRef(null);
@@ -51,7 +52,7 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-    const elements = [logoRef, headerRef, bodyRef, quoteRef, formRef, footerRef];
+    const elements = [logoRef, headerRef, dividerRef, bodyRef, quoteRef, formRef, footerRef];
     elements.forEach(ref => {
       if (ref.current) observer.observe(ref.current);
     });
@@ -219,6 +220,17 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
           }
         }
 
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 0.6;
+            transform: translate(-50%, -50%) scale(1);
+          }
+          50% {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.1);
+          }
+        }
+
         @keyframes slideUp {
           from {
             opacity: 0;
@@ -298,41 +310,88 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
             ${colors.green} 100%)`
         }}
       >
-        {/* Logo */}
-        <div ref={logoRef} className="mb-2 opacity-0">
-          <div
-            className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 flex items-center justify-center relative"
-            style={{
-              borderColor: colors.goldPrimary,
-              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3), 0 0 20px rgba(237, 205, 103, 0.4), inset 0 0 20px rgba(255, 248, 220, 0.1)'
-            }}
-          >
-            <div className="absolute inset-0 rounded-full border m-1" style={{ borderColor: colors.goldPrimary }}></div>
-            <img
-              src="/images/logo%20pn.png"
-              alt="House of Aya Logo"
-              className="object-contain"
-              style={{
-                width: '80px',
-                height: '80px',
-                filter: 'drop-shadow(0 0 8px rgba(237, 205, 103, 0.6)) drop-shadow(1px 2px 3px rgba(5, 4, 4, 0.9))'
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Header */}
-        <div ref={headerRef} className="space-y-1 opacity-0">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl tracking-widest font-serif font-light text-shadow-strong" style={primaryGoldStyle}>
+        {/* Brand Header with Logo */}
+        <div ref={logoRef} className="mb-4 opacity-0 space-y-3">
+          {/* House of Aya */}
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl tracking-[0.15em] font-serif font-light text-shadow-strong" style={primaryGoldStyle}>
             HOUSE OF AYA
           </h1>
-          <p className="text-xs sm:text-sm tracking-[0.2em] font-sans uppercase opacity-90 text-shadow-medium">
-            Manifest of Light
+
+          {/* Logo with Halo */}
+          <div className="flex justify-center">
+            <div className="relative">
+              {/* Outer Soft Halo */}
+              <div
+                className="absolute inset-0 rounded-full"
+                style={{
+                  width: '140px',
+                  height: '140px',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  background: 'radial-gradient(circle, rgba(255, 248, 220, 0.5) 0%, rgba(237, 205, 103, 0.4) 25%, rgba(255, 248, 220, 0.25) 50%, transparent 75%)',
+                  animation: 'pulse 3s ease-in-out infinite',
+                  filter: 'blur(15px)',
+                  boxShadow: '0 0 50px rgba(237, 205, 103, 0.6), 0 0 80px rgba(255, 248, 220, 0.4)'
+                }}
+              />
+
+              {/* Inner Glow Layer */}
+              <div
+                className="absolute inset-0 rounded-full"
+                style={{
+                  width: '100px',
+                  height: '100px',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  background: 'radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(237, 205, 103, 0.5) 35%, rgba(255, 248, 220, 0.3) 60%, transparent 80%)',
+                  animation: 'pulse 3s ease-in-out infinite reverse',
+                  filter: 'blur(8px)',
+                }}
+              />
+
+              {/* Logo Container */}
+              <div
+                className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-full border-2 flex items-center justify-center relative"
+                style={{
+                  borderColor: colors.goldPrimary,
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3), 0 0 25px rgba(237, 205, 103, 0.7), 0 0 40px rgba(255, 248, 220, 0.5), inset 0 0 20px rgba(255, 248, 220, 0.2)',
+                  backgroundColor: 'rgba(255, 255, 255, 0.08)'
+                }}
+              >
+                <div className="absolute inset-0 rounded-full border m-1" style={{ borderColor: colors.goldPrimary }}></div>
+                <img
+                  src="/images/logo%20pn.png"
+                  alt="House of Aya Logo"
+                  className="object-contain relative z-10 w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24"
+                  style={{
+                    filter: 'drop-shadow(0 0 10px rgba(237, 205, 103, 0.7)) drop-shadow(0 0 6px rgba(255, 255, 255, 0.5)) drop-shadow(1px 2px 3px rgba(5, 4, 4, 0.9))'
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Manifest of Light */}
+          <p className="text-sm sm:text-base tracking-[0.25em] font-serif font-light opacity-95 text-shadow-medium" style={secondaryGoldStyle}>
+            MANIFEST OF LIGHT
           </p>
         </div>
 
+        {/* Decorative Divider */}
+        <div className="w-full px-8 pb-6 opacity-0" ref={dividerRef}>
+          <div
+            style={{
+              height: '1.5px',
+              background: `linear-gradient(to right, transparent, ${colors.goldPrimary}, transparent)`,
+              boxShadow: `0 0 8px rgba(237, 205, 103, 0.3)`
+            }}
+          />
+        </div>
+
         {/* Event Title */}
-        <div className="pt-2 space-y-2 opacity-0" ref={headerRef}>
+        <div className="space-y-2 opacity-0" ref={headerRef}>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif tracking-wide text-shadow-strong" style={primaryGoldStyle}>
             {eventName}
           </h2>
@@ -343,7 +402,7 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
         </div>
 
         {/* Body Text */}
-        <div ref={bodyRef} className="space-y-4 text-[17px] sm:text-[19px] leading-relaxed font-normal px-2 text-shadow-medium opacity-0">
+        <div ref={bodyRef} className="space-y-4 text-[17px] sm:text-[19px] leading-relaxed font-normal px-2 text-shadow-medium opacity-0 pt-4">
           <p>
             Te invităm cu drag să pășești în interiorul tău,
             odată cu primii pași în House of Aya.
@@ -357,19 +416,18 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
         </div>
 
         {/* Quote */}
-        <div ref={quoteRef} className="pt-2 space-y-2 opacity-0">
+        <div ref={quoteRef} className="pt-4 space-y-2 opacity-0">
           <h3 className="uppercase tracking-widest text-base sm:text-lg font-serif text-shadow-strong" style={primaryGoldStyle}>
             Mesajul Spiritual al Zilei:
           </h3>
           <p className="italic text-[17px] sm:text-[19px] lg:text-xl font-normal text-shadow-medium leading-relaxed">
-            „Începuturile sunt porți. Când le treci <br/>
-            cu inimă deschisă, lumina se așază în tine."
+            „Începuturile sunt porți. Când le treci cu inimă deschisă, lumina se așază în tine."
           </p>
         </div>
 
         {/* Divider */}
-        <div className="w-full px-8 py-2">
-          <div 
+        <div className="w-full px-8 py-4">
+          <div
             style={{
               height: '2px',
               background: `linear-gradient(to right, transparent, ${colors.goldPrimary}, transparent)`,
@@ -381,20 +439,25 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
         {/* Location & Dress Code */}
         <div className="w-full space-y-3 opacity-0" ref={quoteRef}>
           <div className="info-box">
-            <h4 className="uppercase tracking-wider text-sm font-serif mb-2 text-shadow-medium" style={primaryGoldStyle}>
-              Locație
-            </h4>
-            <p className="text-[16px] font-normal text-shadow-medium">
-              Madrigalului nr. 58<br/>
-              București, Sector 1
+            <div className="flex items-center gap-2 mb-3">
+              <span style={{ color: colors.goldPrimary, fontSize: '16px' }}>✦</span>
+              <h4 className="uppercase tracking-wider text-sm font-serif text-shadow-medium" style={primaryGoldStyle}>
+                Locație
+              </h4>
+            </div>
+            <p className="text-[16px] font-normal text-shadow-medium leading-relaxed">
+              <span className="font-medium">Madrigalului Nr. 58</span>, București, Sector 1
             </p>
           </div>
-          
+
           <div className="info-box">
-            <h4 className="uppercase tracking-wider text-sm font-serif mb-2 text-shadow-medium" style={primaryGoldStyle}>
-              Dress Code
-            </h4>
-            <p className="text-[16px] font-normal text-shadow-medium">
+            <div className="flex items-center gap-2 mb-3">
+              <span style={{ color: colors.goldPrimary, fontSize: '16px' }}>✦</span>
+              <h4 className="uppercase tracking-wider text-sm font-serif text-shadow-medium" style={primaryGoldStyle}>
+                Dress Code
+              </h4>
+            </div>
+            <p className="text-[16px] font-normal text-shadow-medium leading-relaxed">
               Soft white | Sage | Nude | Gold accents
             </p>
           </div>
@@ -514,13 +577,22 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
         {/* Footer */}
         <div ref={footerRef} className="w-full pt-4 pb-2 opacity-0">
           <div className="mb-4 text-center">
-            <p className="text-xl sm:text-2xl mb-3 text-shadow-strong" style={primaryGoldStyle}>
+            <p className="text-xl sm:text-2xl mb-4 text-shadow-strong" style={primaryGoldStyle}>
               Te așteaptă:
             </p>
-            <div className="space-y-1 text-[17px] sm:text-[18px] font-normal text-shadow-medium">
-              <p>Tur în prezență și tăcere frumoasă</p>
-              <p>Micro-experiențe</p>
-              <p>Lagree & Yoga</p>
+            <div className="space-y-2 text-[17px] sm:text-[18px] font-normal text-shadow-medium">
+              <div className="flex items-center justify-center gap-2">
+                <span style={{ color: colors.goldPrimary, fontSize: '12px' }}>◆</span>
+                <p>Tur în prezență și tăcere frumoasă</p>
+              </div>
+              <div className="flex items-center justify-center gap-2">
+                <span style={{ color: colors.goldPrimary, fontSize: '12px' }}>◆</span>
+                <p>Micro-experiențe</p>
+              </div>
+              <div className="flex items-center justify-center gap-2">
+                <span style={{ color: colors.goldPrimary, fontSize: '12px' }}>◆</span>
+                <p>Lagree & Yoga</p>
+              </div>
             </div>
           </div>
           <div className="flex justify-end w-full mt-8">
