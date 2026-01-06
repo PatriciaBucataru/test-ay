@@ -35,7 +35,7 @@ const experiences = [
 
 export default function ExperiencesSection() {
   return (
-    <section className="relative py-20 lg:py-32 bg-gradient-to-b from-[#d4ddc9] to-[#c8d5b9]">
+    <section id="experiences" className="relative py-20 lg:py-32 bg-gradient-to-b from-[#d4ddc9] to-[#c8d5b9]">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         {/* Section Header */}
         <div className="text-center mb-16 lg:mb-24">
