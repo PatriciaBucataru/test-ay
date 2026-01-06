@@ -6,13 +6,13 @@ export default function ComingSoonPage() {
 
   useEffect(() => {
     setIsLoaded(true);
-    const newParticles = Array.from({ length: 20 }, (_, i) => ({
+    const newParticles = Array.from({ length: 35 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: Math.random() * 3 + 1.5,
-      duration: Math.random() * 8 + 10,
-      delay: Math.random() * 4
+      size: Math.random() * 5 + 2,
+      duration: Math.random() * 7 + 8,
+      delay: Math.random() * 3
     }));
     setParticles(newParticles);
   }, []);
@@ -88,31 +88,30 @@ export default function ComingSoonPage() {
             top: `${particle.y}%`,
             width: `${particle.size}px`,
             height: `${particle.size}px`,
-            background: 'radial-gradient(circle, rgba(237, 205, 103, 0.5) 0%, rgba(255, 248, 220, 0.4) 40%, rgba(237, 205, 103, 0.2) 100%)',
+            background: 'radial-gradient(circle, rgba(255, 248, 220, 0.9) 0%, rgba(237, 205, 103, 0.7) 40%, rgba(237, 205, 103, 0.4) 100%)',
             animation: `float ${particle.duration}s ease-in-out infinite`,
             animationDelay: `${particle.delay}s`,
-            boxShadow: '0 0 10px rgba(237, 205, 103, 0.3)',
+            boxShadow: '0 0 20px rgba(237, 205, 103, 0.6), 0 0 30px rgba(255, 248, 220, 0.4)',
           }}
         />
       ))}
 
       <div className="relative z-10 text-center px-6">
         {/* Logo with Halo */}
-        <div className={`mb-8 flex justify-center ${isLoaded ? 'animate-fadeIn' : 'opacity-0'}`}>
+        <div className="mb-8 flex justify-center">
           <div className="relative">
             {/* Outer Halo */}
             <div
               className="absolute inset-0 rounded-full"
               style={{
-                width: '160px',
-                height: '160px',
+                width: '180px',
+                height: '180px',
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
-                background: 'radial-gradient(circle, rgba(255, 248, 220, 0.4) 0%, rgba(237, 205, 103, 0.3) 25%, rgba(255, 248, 220, 0.2) 50%, transparent 75%)',
-                animation: 'pulse 4s ease-in-out infinite',
-                filter: 'blur(12px)',
-                boxShadow: '0 0 40px rgba(237, 205, 103, 0.5), 0 0 60px rgba(255, 248, 220, 0.3)'
+                background: 'radial-gradient(circle, rgba(255, 248, 220, 0.6) 0%, rgba(237, 205, 103, 0.5) 25%, rgba(255, 248, 220, 0.3) 50%, transparent 75%)',
+                filter: 'blur(20px)',
+                boxShadow: '0 0 60px rgba(237, 205, 103, 0.7), 0 0 100px rgba(255, 248, 220, 0.5)'
               }}
             />
 
@@ -120,14 +119,13 @@ export default function ComingSoonPage() {
             <div
               className="absolute inset-0 rounded-full"
               style={{
-                width: '120px',
-                height: '120px',
+                width: '140px',
+                height: '140px',
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
-                background: 'radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(237, 205, 103, 0.4) 35%, rgba(255, 248, 220, 0.25) 60%, transparent 80%)',
-                animation: 'pulse 4s ease-in-out infinite reverse',
-                filter: 'blur(6px)',
+                background: 'radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(237, 205, 103, 0.5) 35%, rgba(255, 248, 220, 0.4) 60%, transparent 80%)',
+                filter: 'blur(10px)',
               }}
             />
 
@@ -154,10 +152,7 @@ export default function ComingSoonPage() {
         </div>
 
         {/* Brand Text */}
-        <div
-          className={`space-y-4 mb-12 ${isLoaded ? 'animate-fadeIn' : 'opacity-0'}`}
-          style={{ animationDelay: '0.3s' }}
-        >
+        <div className="space-y-4 mb-12">
           <h1
             className="font-display text-5xl sm:text-6xl lg:text-7xl font-light tracking-wide"
             style={{ color: colors.goldPrimary, textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}
@@ -173,10 +168,7 @@ export default function ComingSoonPage() {
         </div>
 
         {/* Coming Soon Message */}
-        <div
-          className={`space-y-6 ${isLoaded ? 'animate-fadeIn' : 'opacity-0'}`}
-          style={{ animationDelay: '0.6s' }}
-        >
+        <div className="space-y-6">
           <div
             className="inline-block px-8 py-4 rounded-2xl"
             style={{
@@ -196,7 +188,7 @@ export default function ComingSoonPage() {
 
           <p
             className="font-body text-base sm:text-lg max-w-md mx-auto leading-relaxed"
-            style={{ color: '#6b7c5e', textShadow: '0 1px 2px rgba(0, 0, 0, 0.2)' }}
+            style={{ color: colors.goldSecondary, textShadow: '0 2px 4px rgba(0, 0, 0, 0.4)' }}
           >
             Un spațiu al liniștii, transformării și renașterii interioare.
             <br />
