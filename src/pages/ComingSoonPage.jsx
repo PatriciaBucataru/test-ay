@@ -140,9 +140,12 @@ export default function ComingSoonPage() {
             >
               <div className="absolute inset-0 rounded-full border m-1" style={{ borderColor: colors.goldPrimary }}></div>
               <img
-                src="/images/logo%20pn.png"
+                src="/images/logo.webp"
                 alt="House of Aya"
                 className="object-contain relative z-10 w-24 h-24"
+                width="96"
+                height="96"
+                loading="eager"
                 style={{
                   filter: 'drop-shadow(0 0 10px rgba(237, 205, 103, 0.7)) drop-shadow(0 0 6px rgba(255, 255, 255, 0.5)) drop-shadow(1px 2px 3px rgba(5, 4, 4, 0.9))'
                 }}
