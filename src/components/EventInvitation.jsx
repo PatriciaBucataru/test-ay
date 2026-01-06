@@ -160,7 +160,7 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
-         style={{ background: 'linear-gradient(135deg, #f5e6a8 0%, #edcd67 50%, #f5e6a8 100%)' }}>
+         style={{ background: 'linear-gradient(135deg, #c8d5b9 0%, #b8c9a4 50%, #a8b894 100%)' }}>
 
       {/* Animated light particles */}
       {particles.map(particle => (
