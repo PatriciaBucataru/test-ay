@@ -16,7 +16,7 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
 
   // Adjusted colors - green more yellow/pale
   const colors = {
-    green: '#6b8768',
+    green: '#90ae83ff',
     goldPrimary: '#edcd67',
     goldSecondary: '#f0db8e'
   };
