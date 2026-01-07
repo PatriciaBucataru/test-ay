@@ -251,89 +251,97 @@ const EventInvitation = ({
         />
       ))}
 
-      <style>{`
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0px) translateX(0px);
-            opacity: 0.5;
-          }
-          25% {
-            transform: translateY(-25px) translateX(15px);
-            opacity: 1;
-          }
-          50% {
-            transform: translateY(-50px) translateX(-15px);
-            opacity: 0.7;
-          }
-          75% {
-            transform: translateY(-25px) translateX(-20px);
-            opacity: 0.9;
-          }
-        }
+   <style>{`
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px) translateX(0px);
+      opacity: 0.5;
+    }
+    25% {
+      transform: translateY(-25px) translateX(15px);
+      opacity: 1;
+    }
+    50% {
+      transform: translateY(-50px) translateX(-15px);
+      opacity: 0.7;
+    }
+    75% {
+      transform: translateY(-25px) translateX(-20px);
+      opacity: 0.9;
+    }
+  }
 
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
 
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-        @keyframes pulse {
-          0%, 100% {
-            opacity: 0.6;
-            transform: translate(-50%, -50%) scale(1);
-          }
-          50% {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1.1);
-          }
-        }
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 0.6;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+  }
 
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-        .animate-fadeIn { animation: fadeIn 0.4s ease-out; }
-        .animate-slideUp { animation: slideUp 0.8s ease-out forwards; }
+  .animate-fadeIn { animation: fadeIn 0.4s ease-out; }
+  .animate-slideUp { animation: slideUp 0.8s ease-out forwards; }
 
-        @font-face {
-          font-family: 'ArinttikaSignature';
-          src: url('/fonts/ArinttikaSignature.ttf') format('truetype');
-          font-weight: normal;
-          font-style: normal;
-        }
+  @font-face {
+    font-family: 'ArinttikaSignature';
+    src: url('/fonts/ArinttikaSignature.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
 
-        .text-shadow-strong { text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9); }
-        .text-shadow-medium { text-shadow: 0 2px 3px rgba(0, 0, 0, 0.7); }
+  .text-shadow-strong { text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9); }
+  .text-shadow-medium { text-shadow: 0 2px 3px rgba(0, 0, 0, 0.7); }
 
-        .gold-input::placeholder {
-          color: #f0db8e;
-          opacity: 0.7;
-          font-style: italic;
-          font-size: 16px;
-        }
+  .gold-input::placeholder {
+    color: #f0db8e;
+    opacity: 0.7;
+    font-style: italic;
+    font-size: 16px;
+  }
 
-        .gold-input:focus {
-          border: 2.5px solid #edcd67 !important;
-          outline: none !important;
-          box-shadow: 0 2px 8px rgba(237, 205, 103, 0.4) !important;
-          background-color: rgba(237, 205, 103, 0.12) !important;
-        }
+  .gold-input:focus {
+    border: 2.5px solid #edcd67 !important;
+    outline: none !important;
+    box-shadow: 0 2px 8px rgba(237, 205, 103, 0.4) !important;
+    background-color: rgba(237, 205, 103, 0.12) !important;
+  }
 
-        .info-box {
-          background: rgba(96, 135, 104, 0.3);
-          backdrop-filter: blur(4px);
-          border: 1px solid rgba(237, 205, 103, 0.5);
-          border-radius: 12px;
-          padding: 16px;
-          margin-top: 20px;
-        }
-      `}</style>
+  .gold-input:-webkit-autofill,
+  .gold-input:-webkit-autofill:hover,
+  .gold-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #edcd67 !important;
+    -webkit-box-shadow: 0 0 0px 1000px rgba(237, 205, 103, 0.08) inset !important;
+    box-shadow: 0 0 0px 1000px rgba(237, 205, 103, 0.08) inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
 
+  .info-box {
+    background: rgba(96, 135, 104, 0.3);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(237, 205, 103, 0.5);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 20px;
+  }
+`}</style>
       <div
         className="flex flex-col items-center text-center space-y-6 font-serif shadow-2xl relative z-10"
         style={{
