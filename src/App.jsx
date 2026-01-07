@@ -1,3 +1,5 @@
+
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ComingSoonPage from './pages/ComingSoonPage';
 import HomePage from './pages/HomePage';
@@ -7,8 +9,10 @@ import ContactPage from './pages/ContactPage';
 import Event15Page from './pages/Event15Page';
 import Event16Page from './pages/Event16Page';
 import Event17Page from './pages/Event17Page';
+import Event15ENPage from './pages/Event15ENPage';  // <-- Aici
 
 export default function App() {
+  console.log("App loaded!"); 
   return (
     <Router>
       {/* Custom Styles */}
@@ -103,6 +107,7 @@ export default function App() {
         <Route path="/15-ianuarie" element={<Event15Page />} />
         <Route path="/16-ianuarie" element={<Event16Page />} />
         <Route path="/17-ianuarie" element={<Event17Page />} />
+        <Route path="/15EN-ianuarie" element={<Event15ENPage />} />
 
         {/* Hidden Routes - Will be enabled when site is ready */}
         {/* <Route path="/home" element={<HomePage />} /> */}
@@ -112,4 +117,5 @@ export default function App() {
       </Routes>
     </Router>
   );
+  
 }

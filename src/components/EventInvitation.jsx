@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", apiEndpoint }) => {
+const EventInvitation = ({ 
+  eventDate, 
+  eventTime, 
+  eventId, 
+  eventName = "Event", 
+  apiEndpoint,
+  language = "ro" // Default to Romanian
+}) => {
   const [formData, setFormData] = useState({ nume: '', prenume: '', telefon: '' });
   const [particles, setParticles] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -14,6 +21,70 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
   const quoteRef = useRef(null);
   const formRef = useRef(null);
   const footerRef = useRef(null);
+
+  // Translations
+  const translations = {
+    ro: {
+      manifestOfLight: "MANIFEST OF LIGHT",
+      spiritualMessage: "Mesajul Spiritual al Zilei:",
+      quote: "Începuturile sunt porți. Când le treci cu inimă deschisă, lumina se așază în tine.",
+      location: "Locație",
+      dressCode: "Dress Code",
+      confirmPresence: "Confirmă Prezența",
+      firstName: "Prenume",
+      lastName: "Nume",
+      phone: "Număr de Telefon",
+      submitButton: "Trimite RSVP",
+      submitting: "Se trimite...",
+      thankYou: "Mulțumim pentru confirmare! Ne vedem pe",
+      fillAllFields: "Te rugăm să completezi toate câmpurile",
+      invalidName: "Numele poate conține doar litere (2-50 caractere)",
+      invalidFirstName: "Prenumele poate conține doar litere (2-50 caractere)",
+      invalidPhone: "Numărul de telefon nu este valid. Format: 07XX XXX XXX",
+      tooManyRequests: "Ai trimis prea multe cereri. Te rugăm să încerci din nou peste o oră.",
+      connectionError: "Nu s-a putut trimite confirmarea. Verifică conexiunea la internet și încearcă din nou.",
+      sending: "Se trimite confirmarea...",
+      awaitsYou: "Te așteaptă:",
+      experience1: "Tur în prezență și tăcere frumoasă",
+      experience2: "Micro-experiențe",
+      experience3: "Lagree & Yoga",
+      bodyText1: "Te invităm cu drag să pășești în interiorul tău, odată cu primii pași în House of Aya.",
+      bodyText2: "În această zi de deschidere, îți oferim un spațiu al liniștii, transformării și renașterii interioare – un sanctuar în care corpul, mintea și sufletul se întâlnesc în armonie.",
+      addressLine1: "Madrigalului Nr. 58",
+      addressLine2: "București, Sector 1"
+    },
+    en: {
+      manifestOfLight: "MANIFEST OF LIGHT",
+      spiritualMessage: "Spiritual Message of the Day:",
+      quote: "Beginnings are gateways. When you cross them with an open heart, light settles within you.",
+      location: "Location",
+      dressCode: "Dress Code",
+      confirmPresence: "Confirm Your Presence",
+      firstName: "First Name",
+      lastName: "Last Name",
+      phone: "Phone Number",
+      submitButton: "Send RSVP",
+      submitting: "Sending...",
+      thankYou: "Thank you for confirming! See you on",
+      fillAllFields: "Please fill in all fields",
+      invalidName: "Last name can only contain letters (2-50 characters)",
+      invalidFirstName: "First name can only contain letters (2-50 characters)",
+      invalidPhone: "Phone number is not valid. Format: 07XX XXX XXX",
+      tooManyRequests: "You've sent too many requests. Please try again in an hour.",
+      connectionError: "Could not send confirmation. Check your internet connection and try again.",
+      sending: "Sending confirmation...",
+      awaitsYou: "What Awaits You:",
+      experience1: "Tour in presence and beautiful silence",
+      experience2: "Micro-experiences",
+      experience3: "Lagree & Yoga",
+      bodyText1: "We warmly invite you to step into your inner self, with your first steps into House of Aya.",
+      bodyText2: "On this opening day, we offer you a space of peace, transformation, and inner rebirth – a sanctuary where body, mind, and soul meet in harmony.",
+      addressLine1: "Madrigalului No. 58",
+      addressLine2: "Bucharest, Sector 1"
+    }
+  };
+
+  const t = translations[language];
 
   // Adjusted colors - green more yellow/pale
   const colors = {
@@ -92,27 +163,27 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
     e.preventDefault();
 
     if (!formData.nume || !formData.prenume || !formData.telefon) {
-      setSubmitMessage('Te rugăm să completezi toate câmpurile');
+      setSubmitMessage(t.fillAllFields);
       return;
     }
 
     if (!validateName(formData.nume)) {
-      setSubmitMessage('Numele poate conține doar litere (2-50 caractere)');
+      setSubmitMessage(t.invalidName);
       return;
     }
 
     if (!validateName(formData.prenume)) {
-      setSubmitMessage('Prenumele poate conține doar litere (2-50 caractere)');
+      setSubmitMessage(t.invalidFirstName);
       return;
     }
 
     if (!validatePhone(formData.telefon)) {
-      setSubmitMessage('Numărul de telefon nu este valid. Format: 07XX XXX XXX');
+      setSubmitMessage(t.invalidPhone);
       return;
     }
 
     setIsSubmitting(true);
-    setSubmitMessage('Se trimite confirmarea...');
+    setSubmitMessage(t.sending);
 
     try {
       const response = await fetch(apiEndpoint, {
@@ -126,18 +197,18 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
       const data = await response.json();
 
       if (response.ok) {
-        setSubmitMessage(`Mulțumim pentru confirmare! Ne vedem pe ${eventDate}!`);
+        setSubmitMessage(`${t.thankYou} ${eventDate}!`);
         setFormData({ nume: '', prenume: '', telefon: '' });
       } else {
-        if (data.error.includes('Prea multe cereri')) {
-          setSubmitMessage('Ai trimis prea multe cereri. Te rugăm să încerci din nou peste o oră.');
+        if (data.error.includes('Prea multe cereri') || data.error.includes('Too many requests')) {
+          setSubmitMessage(t.tooManyRequests);
         } else {
           setSubmitMessage(data.error);
         }
       }
     } catch (error) {
       console.error('Error submitting RSVP:', error);
-      setSubmitMessage('Nu s-a putut trimite confirmarea. Verifică conexiunea la internet și încearcă din nou.');
+      setSubmitMessage(t.connectionError);
     } finally {
       setIsSubmitting(false);
     }
@@ -201,23 +272,13 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
         }
 
         @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
 
         @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes pulse {
@@ -232,23 +293,12 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
         }
 
         @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
         }
 
-        .animate-fadeIn {
-          animation: fadeIn 0.4s ease-out;
-        }
-
-        .animate-slideUp {
-          animation: slideUp 0.8s ease-out forwards;
-        }
+        .animate-fadeIn { animation: fadeIn 0.4s ease-out; }
+        .animate-slideUp { animation: slideUp 0.8s ease-out forwards; }
 
         @font-face {
           font-family: 'ArinttikaSignature';
@@ -257,19 +307,8 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
           font-style: normal;
         }
 
-        .text-shadow-strong {
-          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
-        }
-
-        .text-shadow-medium {
-          text-shadow: 0 2px 3px rgba(0, 0, 0, 0.7);
-        }
-
-        .gold-input {
-          border: none !important;
-          outline: none !important;
-          box-shadow: none !important;
-        }
+        .text-shadow-strong { text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9); }
+        .text-shadow-medium { text-shadow: 0 2px 3px rgba(0, 0, 0, 0.7); }
 
         .gold-input::placeholder {
           color: #f0db8e;
@@ -304,23 +343,17 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
           borderRadius: '32px',
           padding: '48px 40px',
           boxShadow: '0 0 60px rgba(237, 205, 103, 0.3), 0 0 100px rgba(255, 248, 220, 0.2), 0 20px 40px rgba(0, 0, 0, 0.3)',
-          background: `linear-gradient(135deg,
-            ${colors.green} 0%,
-            rgba(107, 135, 104, 0.95) 50%,
-            ${colors.green} 100%)`
+          background: `linear-gradient(135deg, ${colors.green} 0%, rgba(107, 135, 104, 0.95) 50%, ${colors.green} 100%)`
         }}
       >
         {/* Brand Header with Logo */}
         <div ref={logoRef} className="mb-4 opacity-0 space-y-3">
-          {/* House of Aya */}
           <h1 className="text-3xl sm:text-4xl lg:text-5xl tracking-[0.15em] font-serif font-light text-shadow-strong" style={primaryGoldStyle}>
             HOUSE OF AYA
           </h1>
 
-          {/* Logo with Halo */}
           <div className="flex justify-center">
             <div className="relative">
-              {/* Outer Soft Halo */}
               <div
                 className="absolute inset-0 rounded-full"
                 style={{
@@ -336,7 +369,6 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
                 }}
               />
 
-              {/* Inner Glow Layer */}
               <div
                 className="absolute inset-0 rounded-full"
                 style={{
@@ -351,7 +383,6 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
                 }}
               />
 
-              {/* Logo Container */}
               <div
                 className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-full border-2 flex items-center justify-center relative"
                 style={{
@@ -376,9 +407,8 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
             </div>
           </div>
 
-          {/* Manifest of Light */}
           <p className="text-sm sm:text-base tracking-[0.25em] font-serif font-light opacity-95 text-shadow-medium" style={secondaryGoldStyle}>
-            MANIFEST OF LIGHT
+            {t.manifestOfLight}
           </p>
         </div>
 
@@ -406,25 +436,17 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
 
         {/* Body Text */}
         <div ref={bodyRef} className="space-y-4 text-[17px] sm:text-[19px] leading-relaxed font-normal px-2 text-shadow-medium opacity-0 pt-4">
-          <p>
-            Te invităm cu drag să pășești în interiorul tău,
-            odată cu primii pași în House of Aya.
-          </p>
-          <p>
-            În această zi de deschidere, îți oferim un spațiu
-            al liniștii, transformării și renașterii interioare – un
-            sanctuar în care corpul, mintea și sufletul se
-            întâlnesc în armonie.
-          </p>
+          <p>{t.bodyText1}</p>
+          <p>{t.bodyText2}</p>
         </div>
 
         {/* Quote */}
         <div ref={quoteRef} className="pt-4 space-y-2 opacity-0">
           <h3 className="uppercase tracking-widest text-base sm:text-lg font-serif text-shadow-strong" style={primaryGoldStyle}>
-            Mesajul Spiritual al Zilei:
+            {t.spiritualMessage}
           </h3>
           <p className="italic text-[17px] sm:text-[19px] lg:text-xl font-normal text-shadow-medium leading-relaxed">
-            „Începuturile sunt porți. Când le treci cu inimă deschisă, lumina se așază în tine."
+            {t.quote}
           </p>
         </div>
 
@@ -445,11 +467,11 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
             <div className="flex items-center gap-2 mb-3">
               <span style={{ color: colors.goldPrimary, fontSize: '16px' }}>✦</span>
               <h4 className="uppercase tracking-wider text-sm font-serif text-shadow-medium" style={primaryGoldStyle}>
-                Locație
+                {t.location}
               </h4>
             </div>
             <p className="text-[16px] font-normal text-shadow-medium leading-relaxed">
-              <span className="font-medium">Madrigalului Nr. 58</span>, București, Sector 1
+              <span className="font-medium">{t.addressLine1}</span>, {t.addressLine2}
             </p>
           </div>
 
@@ -457,7 +479,7 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
             <div className="flex items-center gap-2 mb-3">
               <span style={{ color: colors.goldPrimary, fontSize: '16px' }}>✦</span>
               <h4 className="uppercase tracking-wider text-sm font-serif text-shadow-medium" style={primaryGoldStyle}>
-                Dress Code
+                {t.dressCode}
               </h4>
             </div>
             <p className="text-[16px] font-normal text-shadow-medium leading-relaxed">
@@ -469,14 +491,14 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
         {/* RSVP Form */}
         <div ref={formRef} className="w-full pt-6 px-2 sm:px-4 opacity-0">
           <h3 className="uppercase tracking-widest text-xl sm:text-2xl font-serif mb-6 text-shadow-strong" style={primaryGoldStyle}>
-            Confirmă Prezența
+            {t.confirmPresence}
           </h3>
           <div>
             <div className="space-y-5">
               <div>
                 <input
                   type="text"
-                  placeholder="Nume"
+                  placeholder={t.lastName}
                   value={formData.nume}
                   onChange={(e) => setFormData({...formData, nume: e.target.value})}
                   style={inputStyle}
@@ -486,7 +508,7 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
               <div>
                 <input
                   type="text"
-                  placeholder="Prenume"
+                  placeholder={t.firstName}
                   value={formData.prenume}
                   onChange={(e) => setFormData({...formData, prenume: e.target.value})}
                   style={inputStyle}
@@ -496,7 +518,7 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
               <div>
                 <input
                   type="tel"
-                  placeholder="Număr de Telefon"
+                  placeholder={t.phone}
                   value={formData.telefon}
                   onChange={(e) => setFormData({...formData, telefon: e.target.value})}
                   style={inputStyle}
@@ -510,9 +532,9 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
               <div
                 className="text-center mt-5 text-[15px] font-medium animate-fadeIn"
                 style={{
-                  color: submitMessage.includes('Mulțumim')
+                  color: submitMessage.includes(t.thankYou.split(' ')[0])
                     ? colors.goldPrimary
-                    : submitMessage.includes('Se trimite')
+                    : submitMessage.includes(t.sending.split(' ')[0])
                       ? colors.goldSecondary
                       : '#ff8888',
                   textShadow: '0 2px 3px rgba(0, 0, 0, 0.8)',
@@ -520,9 +542,9 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
                   borderRadius: '10px',
                   backgroundColor: 'rgba(107, 135, 104, 0.4)',
                   border: `1px solid ${
-                    submitMessage.includes('Mulțumim')
+                    submitMessage.includes(t.thankYou.split(' ')[0])
                       ? colors.goldPrimary
-                      : submitMessage.includes('Se trimite')
+                      : submitMessage.includes(t.sending.split(' ')[0])
                         ? colors.goldSecondary
                         : '#ff6b6b'
                   }`,
@@ -570,7 +592,7 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
                       }}
                     />
                   )}
-                  {isSubmitting ? 'Se trimite...' : 'Trimite RSVP'}
+                  {isSubmitting ? t.submitting : t.submitButton}
                 </span>
               </button>
             </div>
@@ -581,20 +603,20 @@ const EventInvitation = ({ eventDate, eventTime, eventId, eventName = "Event", a
         <div ref={footerRef} className="w-full pt-4 pb-2 opacity-0">
           <div className="mb-4 text-center">
             <p className="text-xl sm:text-2xl mb-4 text-shadow-strong" style={primaryGoldStyle}>
-              Te așteaptă:
+              {t.awaitsYou}
             </p>
             <div className="space-y-2 text-[17px] sm:text-[18px] font-normal text-shadow-medium">
               <div className="flex items-center justify-center gap-2">
                 <span style={{ color: colors.goldPrimary, fontSize: '12px' }}>◆</span>
-                <p>Tur în prezență și tăcere frumoasă</p>
+                <p>{t.experience1}</p>
               </div>
               <div className="flex items-center justify-center gap-2">
                 <span style={{ color: colors.goldPrimary, fontSize: '12px' }}>◆</span>
-                <p>Micro-experiențe</p>
+                <p>{t.experience2}</p>
               </div>
               <div className="flex items-center justify-center gap-2">
                 <span style={{ color: colors.goldPrimary, fontSize: '12px' }}>◆</span>
-                <p>Lagree & Yoga</p>
+                <p>{t.experience3}</p>
               </div>
             </div>
           </div>
