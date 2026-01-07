@@ -107,7 +107,7 @@ export default function App() {
         <Route path="/15-ianuarie" element={<Event15Page />} />
         <Route path="/16-ianuarie" element={<Event16Page />} />
         <Route path="/17-ianuarie" element={<Event17Page />} />
-        <Route path="/15EN-ianuarie" element={<Event15ENPage />} />
+        <Route path="/en/january-15" element={<Event15ENPage />} />
 
         {/* Hidden Routes - Will be enabled when site is ready */}
         {/* <Route path="/home" element={<HomePage />} /> */}
