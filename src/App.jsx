@@ -1,7 +1,7 @@
 
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ComingSoonPage from './pages/ComingSoonPage';
+// import ComingSoonPage from './pages/ComingSoonPage'; // Unlinked - keeping file intact
 import HomePage from './pages/HomePage';
 import TermsPage from './pages/TermsPage';
 import PrivacyPage from './pages/PrivacyPage';
@@ -102,18 +102,18 @@ export default function App() {
       `}</style>
 
       <Routes>
-        {/* Public Routes - Coming Soon & Events */}
-        <Route path="/" element={<ComingSoonPage />} />
+        {/* Public Routes - Main Site & Events */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="/15-ianuarie" element={<Event15Page />} />
         <Route path="/16-ianuarie" element={<Event16Page />} />
         <Route path="/17-ianuarie" element={<Event17Page />} />
         <Route path="/en/january-15" element={<Event15ENPage />} />
 
-        {/* Hidden Routes - Will be enabled when site is ready */}
-        {/* <Route path="/home" element={<HomePage />} /> */}
-        {/* <Route path="/contact" element={<ContactPage />} /> */}
-        {/* <Route path="/terms" element={<TermsPage />} /> */}
-        {/* <Route path="/privacy" element={<PrivacyPage />} /> */}
+        {/* Hidden Routes - Will be enabled when needed */}
+        {/* <Route path="/coming-soon" element={<ComingSoonPage />} /> */}
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
       </Routes>
     </Router>
   );

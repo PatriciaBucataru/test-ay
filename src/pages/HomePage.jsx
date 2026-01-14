@@ -2,47 +2,81 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AboutSection from '../components/AboutSection';
 import ExperiencesSection from '../components/ExperiencesSection';
+import SubscriptionsSection from '../components/SubscriptionsSection';
 import Footer from '../components/Footer';
 
-const GoldenParticles = () => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none">
-    {[...Array(40)].map((_, i) => {
-      const size = Math.random() * 4 + 2;
-      const startX = Math.random() * 100;
-      const startY = Math.random() * 100;
-      const delay = Math.random() * 5;
-      const duration = Math.random() * 4 + 4;
-
-      return (
-        <div
-          key={i}
-          className="absolute rounded-full bg-[#c9a961] animate-dance"
-          style={{
-            width: `${size}px`,
-            height: `${size}px`,
-            left: `${startX}%`,
-            top: `${startY}%`,
-            animationDelay: `${delay}s`,
-            animationDuration: `${duration}s`,
-            boxShadow: '0 0 8px rgba(201, 169, 97, 0.6)',
-          }}
-        />
-      );
-    })}
-  </div>
-);
-
-export default function HomePage() {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
+const GoldenParticles = () => {
+  const [particles, setParticles] = useState([]);
 
   useEffect(() => {
-    setIsLoaded(true);
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const newParticles = Array.from({ length: 30 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 4 + 2,
+      duration: Math.random() * 10 + 6,
+      delay: Math.random() * 5
+    }));
+    setParticles(newParticles);
   }, []);
+
+  return (
+    <>
+      <style>{`
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px) translateX(0px);
+            opacity: 0.4;
+          }
+          25% {
+            transform: translateY(-20px) translateX(10px);
+            opacity: 0.6;
+          }
+          50% {
+            transform: translateY(-40px) translateX(-10px);
+            opacity: 0.5;
+          }
+          75% {
+            transform: translateY(-20px) translateX(-12px);
+            opacity: 0.6;
+          }
+        }
+      `}</style>
+
+      {/* Radiant light overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 20% 30%, rgba(237, 205, 103, 0.06) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(255, 248, 220, 0.04) 0%, transparent 40%)',
+        }}
+      />
+
+      {/* Animated particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {particles.map(particle => (
+          <div
+            key={particle.id}
+            className="absolute rounded-full"
+            style={{
+              left: `${particle.x}%`,
+              top: `${particle.y}%`,
+              width: `${particle.size}px`,
+              height: `${particle.size}px`,
+              background: 'radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 248, 220, 0.6) 20%, rgba(237, 205, 103, 0.4) 40%, rgba(237, 205, 103, 0.15) 100%)',
+              animation: `float ${particle.duration}s ease-in-out infinite`,
+              animationDelay: `${particle.delay}s`,
+              boxShadow: '0 0 10px rgba(237, 205, 103, 0.4), 0 0 20px rgba(255, 248, 220, 0.3), 0 0 30px rgba(255, 255, 255, 0.2)',
+              filter: 'blur(0.5px)',
+            }}
+          />
+        ))}
+      </div>
+    </>
+  );
+};
+
+export default function HomePage() {
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const navItems = [
     { label: 'CONTACT', href: '/contact' },
@@ -51,20 +85,16 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#c8d5b9] via-[#d4ddc9]/50 to-[#b8c9a4] font-sans overflow-x-hidden">
+    <div className="min-h-screen font-sans overflow-x-hidden" style={{ background: 'linear-gradient(135deg, #8b9e7d 0%, #6b7c5e 50%, #5a6b4d 100%)' }}>
       {/* Navigation */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-[#6b7c5e] lg:bg-transparent ${
-        scrollY > 50 ? 'lg:bg-stone-100/90 lg:backdrop-blur-md lg:shadow-sm' : ''
-      }`}>
+      <nav className="relative z-50 bg-transparent">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="flex items-center justify-between h-20 lg:h-24">
             {/* Menu Button */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className={`font-body text-sm tracking-[0.3em] text-white lg:text-[#6b7c5e] hover:text-[#8b7355] transition-all duration-300 ${
-                isLoaded ? 'animate-fadeIn' : 'opacity-0'
-              }`}
-              style={{ animationDelay: '0.2s' }}
+              className="font-body text-sm tracking-[0.3em] transition-all duration-300"
+              style={{ color: '#edcd67', textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)' }}
             >
               MENU
             </button>
@@ -77,36 +107,33 @@ export default function HomePage() {
                     <Link
                       key={item.label}
                       to={item.href}
-                      className={`font-body text-sm tracking-[0.2em] text-[#6b7c5e] hover:text-[#8b7355] transition-all duration-300 relative group ${
-                        isLoaded ? 'animate-fadeIn' : 'opacity-0'
-                      }`}
-                      style={{ animationDelay: `${0.3 + index * 0.1}s` }}
+                      className="font-body text-sm tracking-[0.2em] transition-all duration-300 relative group"
+                      style={{ color: '#edcd67', textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)' }}
                     >
                       {item.label}
-                      <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#8b7355] transition-all duration-300 group-hover:w-full" />
+                      <span className="absolute -bottom-1 left-0 w-0 h-px transition-all duration-300 group-hover:w-full" style={{ backgroundColor: '#f0db8e' }} />
                     </Link>
                   ) : (
                     <a
                       key={item.label}
                       href={item.href}
-                      className={`font-body text-sm tracking-[0.2em] text-[#6b7c5e] hover:text-[#8b7355] transition-all duration-300 relative group ${
-                        isLoaded ? 'animate-fadeIn' : 'opacity-0'
-                      }`}
-                      style={{ animationDelay: `${0.3 + index * 0.1}s` }}
+                      className="font-body text-sm tracking-[0.2em] transition-all duration-300 relative group"
+                      style={{ color: '#edcd67', textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)' }}
                     >
                       {item.label}
-                      <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#8b7355] transition-all duration-300 group-hover:w-full" />
+                      <span className="absolute -bottom-1 left-0 w-0 h-px transition-all duration-300 group-hover:w-full" style={{ backgroundColor: '#f0db8e' }} />
                     </a>
                   )
                 ))}
               </div>
 
               {/* Logo */}
-              <div className={`${isLoaded ? 'animate-fadeIn' : 'opacity-0'}`} style={{ animationDelay: '0.6s' }}>
+              <div>
                 <img
-                  src="/images/logo pn.png"
+                  src="/images/logo.webp"
                   alt="House of Aya"
-                  className="w-8 h-8 lg:w-10 lg:h-10 animate-breathe drop-shadow-[0_0_8px_rgba(244,208,63,0.8)]"
+                  className="w-8 h-8 lg:w-10 lg:h-10 animate-breathe"
+                  style={{ filter: 'drop-shadow(0 0 8px rgba(237, 205, 103, 0.5))' }}
                 />
               </div>
             </div>
@@ -151,10 +178,7 @@ export default function HomePage() {
       </div>
 
       {/* Hero Section */}
-      <main className="relative min-h-screen flex items-center">
-        {/* Background Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#c8d5b9]/30 via-transparent to-[#b8c9a4]/20" />
-
+      <main className="relative min-h-screen flex items-center pb-16">
         {/* Golden Particles Effect */}
         <GoldenParticles />
 
@@ -177,53 +201,109 @@ export default function HomePage() {
             </div>
 
             {/* Left Content */}
-            <div className="order-2 lg:order-1 text-center lg:text-left px-6 py-8 lg:py-0">
+            <div className="order-2 lg:order-1 text-center lg:text-left px-6 py-8 lg:py-0 lg:pt-24">
               {/* Brand Name */}
-              <div className={`mb-4 lg:mb-8 ${isLoaded ? 'animate-slideIn' : 'opacity-0'}`}>
-                <h1 className="font-display text-3xl lg:text-7xl xl:text-8xl font-light tracking-wide text-[#6b7c5e] leading-none text-shadow-soft">
+              <div className="mb-4 lg:mb-8">
+                <h1
+                  className="font-display text-3xl lg:text-6xl xl:text-7xl font-light tracking-wide leading-none"
+                  style={{
+                    color: '#edcd67',
+                    textShadow: '0 0 12px rgba(237, 205, 103, 0.6), 0 0 20px rgba(255, 248, 220, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3)'
+                  }}
+                >
                   HOUSE OF AYA
                 </h1>
-                <p className="font-display text-lg lg:text-2xl font-light tracking-widest text-[#8b7355] mt-2 lg:mt-4">
+                <p
+                  className="font-display text-lg lg:text-2xl font-light tracking-widest mt-2 lg:mt-4"
+                  style={{ color: '#f0db8e', textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)' }}
+                >
                   Manifest of Light
                 </p>
               </div>
 
               {/* Tagline */}
-              <div
-                className={`mb-6 lg:mb-10 ${
-                  isLoaded ? 'animate-slideUp' : 'opacity-0'
-                }`}
-                style={{ animationDelay: '0.4s' }}
-              >
-                <p className="font-body text-sm lg:text-lg text-[#8b7355]/80 tracking-wide leading-relaxed text-center lg:text-left">
+              <div className="mb-6 lg:mb-10">
+                <p
+                  className="font-body text-sm lg:text-lg tracking-wide leading-relaxed text-center lg:text-left"
+                  style={{ color: '#f0db8e', textShadow: '0 2px 4px rgba(0, 0, 0, 0.4)' }}
+                >
                   Un templu pentru trup, un sanctuar pentru suflet.
                 </p>
-                <div className="mt-4 flex justify-center lg:justify-start">
-                  <img
-                    src="/images/logo pn.png"
-                    alt="House of Aya Logo"
-                    className="h-16 lg:h-20 w-auto drop-shadow-lg"
-                  />
+                <div className="mt-6 flex justify-center lg:justify-start">
+                  <div className="relative">
+                    {/* Outer Halo */}
+                    <div
+                      className="absolute inset-0 rounded-full"
+                      style={{
+                        width: '140px',
+                        height: '140px',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        background: 'radial-gradient(circle, rgba(255, 248, 220, 0.6) 0%, rgba(237, 205, 103, 0.5) 25%, rgba(255, 248, 220, 0.3) 50%, transparent 75%)',
+                        filter: 'blur(20px)',
+                        boxShadow: '0 0 60px rgba(237, 205, 103, 0.7), 0 0 100px rgba(255, 248, 220, 0.5)'
+                      }}
+                    />
+
+                    {/* Inner Glow */}
+                    <div
+                      className="absolute inset-0 rounded-full"
+                      style={{
+                        width: '110px',
+                        height: '110px',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        background: 'radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(237, 205, 103, 0.5) 35%, rgba(255, 248, 220, 0.4) 60%, transparent 80%)',
+                        filter: 'blur(10px)',
+                      }}
+                    />
+
+                    {/* Logo Container */}
+                    <div
+                      className="w-20 h-20 lg:w-24 lg:h-24 rounded-full border-2 flex items-center justify-center relative"
+                      style={{
+                        borderColor: '#edcd67',
+                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3), 0 0 25px rgba(237, 205, 103, 0.7), 0 0 40px rgba(255, 248, 220, 0.5), inset 0 0 20px rgba(255, 248, 220, 0.2)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.08)'
+                      }}
+                    >
+                      <div className="absolute inset-0 rounded-full border m-1" style={{ borderColor: '#edcd67' }}></div>
+                      <img
+                        src="/images/logo.webp"
+                        alt="House of Aya"
+                        className="object-contain relative z-10 w-16 h-16 lg:w-20 lg:h-20"
+                        style={{
+                          filter: 'drop-shadow(0 0 10px rgba(237, 205, 103, 0.7)) drop-shadow(0 0 6px rgba(255, 255, 255, 0.5)) drop-shadow(1px 2px 3px rgba(5, 4, 4, 0.9))'
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
 
               {/* CTA Button */}
-              <div
-                className={`${isLoaded ? 'animate-slideUp' : 'opacity-0'}`}
-                style={{ animationDelay: '0.6s' }}
-              >
-                <button className="group relative overflow-hidden border-2 border-[#6b7c5e] px-6 py-2 lg:px-10 lg:py-4 font-body text-xs lg:text-sm tracking-[0.3em] text-[#6b7c5e] transition-all duration-500 hover:text-white">
-                  <span className="relative z-10">DESCOPERĂ</span>
-                  <div className="absolute inset-0 bg-[#6b7c5e] transform -translate-x-full transition-transform duration-500 group-hover:translate-x-0" />
+              <div>
+                <button
+                  className="group relative overflow-hidden border-2 px-6 py-2 lg:px-10 lg:py-4 font-body text-xs lg:text-sm tracking-[0.3em] transition-all duration-500"
+                  style={{
+                    borderColor: '#edcd67',
+                    color: '#edcd67',
+                    boxShadow: '0 0 20px rgba(237, 205, 103, 0.4)'
+                  }}
+                >
+                  <span className="relative z-10 group-hover:text-[#5a6b4d] transition-colors duration-500">DESCOPERĂ</span>
+                  <div
+                    className="absolute inset-0 transform -translate-x-full transition-transform duration-500 group-hover:translate-x-0"
+                    style={{ backgroundColor: '#edcd67' }}
+                  />
                 </button>
               </div>
             </div>
 
             {/* Desktop Image - Hidden on Mobile */}
-            <div
-              className={`hidden lg:block order-1 lg:order-2 relative ${isLoaded ? 'animate-fadeIn' : 'opacity-0'}`}
-              style={{ animationDelay: '0.3s' }}
-            >
+            <div className="hidden lg:block order-1 lg:order-2 relative">
               <div className="relative">
                 {/* Decorative Elements */}
                 <div className="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br from-amber-200/20 to-transparent rounded-full blur-3xl" />
@@ -245,6 +325,29 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+
+        {/* Golden Divider Line */}
+        <div className="absolute bottom-0 left-0 right-0 flex justify-center px-6">
+          <div className="relative w-full max-w-4xl">
+            <div
+              className="h-0.5 w-full relative"
+              style={{
+                background: 'linear-gradient(90deg, transparent 0%, #edcd67 50%, transparent 100%)',
+                boxShadow: '0 0 15px rgba(237, 205, 103, 0.8), 0 0 30px rgba(255, 248, 220, 0.6), 0 0 45px rgba(237, 205, 103, 0.4)',
+              }}
+            >
+              {/* Extra shine effect */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: 'linear-gradient(90deg, transparent 0%, rgba(255, 248, 220, 0.9) 50%, transparent 100%)',
+                  boxShadow: '0 0 20px rgba(255, 248, 220, 0.9)',
+                  filter: 'blur(1px)',
+                }}
+              />
+            </div>
+          </div>
+        </div>
       </main>
 
       {/* About Section */}
@@ -252,6 +355,9 @@ export default function HomePage() {
 
       {/* Experiences Section */}
       <ExperiencesSection />
+
+      {/* Subscriptions Section */}
+      <SubscriptionsSection />
 
       {/* Footer */}
       <Footer />

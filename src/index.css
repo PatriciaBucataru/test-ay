@@ -1,1 +1,28 @@
 @import "tailwindcss";
+
+/* Disable text selection and cursor completely */
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  caret-color: transparent;
+}
+
+/* Only re-enable for actual input fields */
+input,
+textarea {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+  cursor: text;
+  caret-color: auto;
+}
+
+/* Links and buttons should have pointer cursor */
+a,
+button {
+  cursor: pointer !important;
+}
