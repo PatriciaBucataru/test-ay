@@ -268,11 +268,11 @@ export default function ContactPage() {
                 <div>
                   <p className="text-sm uppercase tracking-wider mb-1 opacity-80">Telefon</p>
                   <a
-                    href="tel:+40123456789"
+                    href="tel:+40771444554"
                     className="transition-opacity hover:opacity-70"
                     style={{ color: colors.goldPrimary }}
                   >
-                    +40 123 456 789
+                    +40 771 444 554
                   </a>
                 </div>
               </div>
