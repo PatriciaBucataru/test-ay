@@ -243,32 +243,6 @@ export default function SubscriptionsSection() {
                 )}
               </div>
 
-              {/* Price */}
-              <div className="mb-6">
-                <div className="flex items-baseline gap-2 mb-2">
-                  <span
-                    className="font-display text-4xl lg:text-5xl font-light"
-                    style={{ color: colors.goldPrimary }}
-                  >
-                    {sub.price}
-                  </span>
-                  <span
-                    className="font-body text-lg"
-                    style={{ color: colors.goldSecondary }}
-                  >
-                    / {sub.period}
-                  </span>
-                </div>
-                {sub.annualPrice && (
-                  <p
-                    className="font-body text-sm"
-                    style={{ color: colors.goldSecondary }}
-                  >
-                    Annual: <span style={{ color: colors.goldPrimary }}>{sub.annualPrice}</span> ({sub.annualBonus})
-                  </p>
-                )}
-              </div>
-
               {/* Benefits */}
               <ul className="space-y-3">
                 {sub.benefits.map((benefit, index) => (
@@ -286,55 +260,6 @@ export default function SubscriptionsSection() {
           ))}
         </div>
 
-        {/* Extra Services Section */}
-        <div
-          className="max-w-4xl mx-auto backdrop-blur-sm rounded-3xl p-8 lg:p-12 mt-16"
-          style={{
-            background: 'rgba(144, 174, 131, 0.3)',
-            border: `2px solid ${colors.goldPrimary}`,
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2), 0 0 50px rgba(237, 205, 103, 0.5)'
-          }}
-        >
-          <h3
-            className="font-display text-3xl lg:text-4xl font-light mb-8 text-center"
-            style={{
-              color: colors.goldPrimary,
-              textShadow: '0 0 12px rgba(237, 205, 103, 0.6), 0 0 20px rgba(255, 248, 220, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3)'
-            }}
-          >
-            Extra Services
-          </h3>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div
-              className="font-body text-sm leading-relaxed"
-              style={{ color: colors.goldSecondary }}
-            >
-              <p className="mb-2">
-                <span style={{ color: colors.goldPrimary }}>✦</span> Private Megaformer session 45 min: <strong>350 lei</strong>
-              </p>
-              <p className="mb-2">
-                <span style={{ color: colors.goldPrimary }}>✦</span> 5 private sessions package: <strong>1.500 lei</strong>
-              </p>
-            </div>
-            <div
-              className="font-body text-sm leading-relaxed"
-              style={{ color: colors.goldSecondary }}
-            >
-              <p className="mb-2">
-                <span style={{ color: colors.goldPrimary }}>✦</span> Aya Healing Jade Bed 30 min: <strong>120 lei</strong>
-              </p>
-              <p className="mb-2">
-                <span style={{ color: colors.goldPrimary }}>✦</span> Aya Healing Jade Bed 45 min: <strong>180 lei</strong>
-              </p>
-            </div>
-          </div>
-          <p
-            className="font-body text-sm text-center mt-6 italic"
-            style={{ color: colors.goldPrimary }}
-          >
-            30% discount for members on any additional session
-          </p>
-        </div>
       </div>
 
       {/* Golden Divider Line */}

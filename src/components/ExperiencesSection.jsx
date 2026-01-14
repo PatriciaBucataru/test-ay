@@ -28,7 +28,7 @@ const experiences = [
     title: "AYA Elements",
     subtitle: "Inspired by light and nature",
     description: "Curated products including aromas, candles, and elixirs to bring the AYA energy into your daily life.",
-    image: "/images/food.jpg",
+    image: "/images/entrance.jpeg",
     icon: "💧"
   }
 ];
