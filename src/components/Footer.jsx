@@ -63,8 +63,8 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3 font-body text-sm text-white/80">
               <li>
-                <a href="mailto:hello@houseofaya.ro" className="hover:text-[#f4d03f] transition-colors">
-                  hello@houseofaya.ro
+                <a href="mailto:houseofaya.manifest@gmail.com" className="hover:text-[#f4d03f] transition-colors">
+                  houseofaya.manifest@gmail.com
                 </a>
               </li>
               <li>

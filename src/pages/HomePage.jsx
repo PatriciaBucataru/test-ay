@@ -178,12 +178,12 @@ export default function HomePage() {
       </div>
 
       {/* Hero Section */}
-      <main className="relative min-h-screen flex items-center pb-16">
+      <main className="relative h-screen flex items-center overflow-hidden">
         {/* Golden Particles Effect */}
         <GoldenParticles />
 
-        <div className="relative w-full max-w-7xl mx-auto lg:px-12 lg:py-0">
-          <div className="flex flex-col lg:grid lg:grid-cols-[1fr_2fr] lg:gap-16 lg:items-center lg:min-h-screen">
+        <div className="relative w-full max-w-7xl mx-auto lg:px-12 h-full flex items-center">
+          <div className="flex flex-col lg:grid lg:grid-cols-[1fr_2fr] lg:gap-16 lg:items-center w-full">
             {/* Mobile Image - First */}
             <div className="lg:hidden pt-20">
               <div className="relative">

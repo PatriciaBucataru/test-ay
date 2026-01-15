@@ -258,11 +258,11 @@ export default function ContactPage() {
                 <div>
                   <p className="text-sm uppercase tracking-wider mb-1 opacity-80">Email</p>
                   <a
-                    href="mailto:hello@houseofaya.ro"
+                    href="mailto:houseofaya.manifest@gmail.com"
                     className="transition-opacity hover:opacity-70"
                     style={{ color: colors.goldPrimary }}
                   >
-                    hello@houseofaya.ro
+                    houseofaya.manifest@gmail.com
                   </a>
                 </div>
                 <div>
