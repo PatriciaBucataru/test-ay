@@ -287,7 +287,7 @@ export default function HomePage() {
               </div>
 
               {/* CTA Button */}
-              <div>
+              {/* <div>
                 <button
                   className="group relative overflow-hidden border-2 px-6 py-2 lg:px-10 lg:py-4 font-body text-xs lg:text-sm tracking-[0.3em] transition-all duration-500"
                   style={{
@@ -302,7 +302,7 @@ export default function HomePage() {
                     style={{ backgroundColor: '#edcd67' }}
                   />
                 </button>
-              </div>
+              </div> */}
             </div>
 
             {/* Desktop Image - Hidden on Mobile */}
