@@ -89,7 +89,7 @@ export default function HomePage() {
       {/* Navigation */}
       <nav className="relative z-50 bg-transparent">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="flex items-center justify-between h-20 lg:h-24">
+          <div className="flex items-center justify-between h-16 lg:h-18">
             {/* Menu Button */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
@@ -185,7 +185,7 @@ export default function HomePage() {
         <div className="relative w-full max-w-7xl mx-auto lg:px-12 h-full flex items-center">
           <div className="flex flex-col lg:grid lg:grid-cols-[1fr_2fr] lg:gap-16 lg:items-center w-full">
             {/* Mobile Image - First */}
-            <div className="lg:hidden pt-20">
+            <div className="lg:hidden pt-16">
               <div className="relative">
                 <div className="relative overflow-hidden shadow-lg">
                   <div className="aspect-[4/3] relative">
@@ -201,7 +201,7 @@ export default function HomePage() {
             </div>
 
             {/* Left Content */}
-            <div className="order-2 lg:order-1 text-center lg:text-left px-6 py-8 lg:py-0 lg:pt-24">
+            <div className="order-2 lg:order-1 text-center lg:text-left px-6 py-8 lg:py-0">
               {/* Brand Name */}
               <div className="mb-4 lg:mb-8">
                 <h1
