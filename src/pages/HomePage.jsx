@@ -190,9 +190,12 @@ export default function HomePage() {
                 <div className="relative overflow-hidden shadow-lg">
                   <div className="aspect-[4/3] relative">
                     <img
-                      src="/images/herosectiondesk.png"
+                      src="/images/herosectiondesk.jpg"
                       alt="Lagree Wellness"
                       className="w-full h-full object-cover object-center"
+                      loading="eager"
+                      width="800"
+                      height="600"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-stone-100/20 via-transparent to-amber-100/30" />
                   </div>
@@ -313,9 +316,12 @@ export default function HomePage() {
                 <div className="relative overflow-hidden rounded-[2rem] lg:rounded-[3rem] lg:h-[75vh] shadow-xl">
                   <div className="aspect-auto h-full relative">
                     <img
-                      src="/images/herosectiondesk.png"
+                      src="/images/herosectiondesk.jpg"
                       alt="Lagree Wellness"
                       className="w-full h-full object-contain object-right"
+                      loading="eager"
+                      width="1200"
+                      height="900"
                     />
                     {/* Overlay gradient */}
                     <div className="absolute inset-0 bg-gradient-to-t from-stone-100/20 via-transparent to-amber-100/30" />

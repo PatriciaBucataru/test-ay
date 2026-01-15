@@ -4,7 +4,7 @@ const experiences = [
     title: "AYA Movement",
     subtitle: "Where movement becomes meditation",
     description: "The space of the awakened body. Experience the power of Lagree fitness in our state-of-the-art studio.",
-    image: "/images/img3.png",
+    image: "/images/img3.jpg",
     icon: "🌿"
   },
   {
@@ -12,7 +12,7 @@ const experiences = [
     title: "AYA Rituals",
     subtitle: "Moments of presence",
     description: "A collection of sensory experiences and wellness ceremonies designed to reconnect you with your essence.",
-    image: "/images/img1.png",
+    image: "/images/img1.jpg",
     icon: "☀️"
   },
   {
@@ -20,7 +20,7 @@ const experiences = [
     title: "AYA Sanctum",
     subtitle: "Space of silence",
     description: "The sanctuary of introspection and wholeness. A place for meditation, sound healing, and inner peace.",
-    image: "/images/img2.png",
+    image: "/images/img2.jpg",
     icon: "🌙"
   },
   {
@@ -61,6 +61,9 @@ export default function ExperiencesSection() {
                   src={experience.image}
                   alt={experience.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
+                  width="800"
+                  height="600"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
               </div>
