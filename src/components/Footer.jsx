@@ -80,7 +80,7 @@ export default function Footer() {
             {/* Social Media */}
             <div className="mt-6 flex gap-4">
               <a
-                href="#"
+                href="https://www.instagram.com/houseofaya.manifest/"
                 className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center hover:border-[#f4d03f] hover:text-[#f4d03f] transition-all"
                 aria-label="Instagram"
               >
@@ -89,7 +89,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://www.facebook.com/profile.php?id=61582359556907&mibextid=wwXIfr&rdid=qkF0PToHzAw4NGHJ&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1Grriy3m1F%2F%3Fmibextid%3DwwXIfr"
                 className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center hover:border-[#f4d03f] hover:text-[#f4d03f] transition-all"
                 aria-label="Facebook"
               >

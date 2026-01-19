@@ -10,7 +10,8 @@
       "Bash(npm run dev:*)",
       "Bash(git remote set-url:*)",
       "Bash(ls:*)",
-      "Bash(awk:*)"
+      "Bash(awk:*)",
+      "Bash(git log:*)"
     ],
     "deny": [],
     "ask": []
