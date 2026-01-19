@@ -216,16 +216,12 @@ export default function ContactPage() {
               </h3>
               <div className="space-y-3 font-body" style={{ color: colors.goldSecondary }}>
                 <div className="flex justify-between items-center">
-                  <span>Luni - Vineri</span>
-                  <span className="font-semibold" style={{ color: colors.goldPrimary }}>07:00 - 21:00</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>Sâmbătă</span>
-                  <span className="font-semibold" style={{ color: colors.goldPrimary }}>08:00 - 20:00</span>
+                  <span>Luni - Sâmbătă</span>
+                  <span className="font-semibold" style={{ color: colors.goldPrimary }}>07:00 - 22:00</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span>Duminică</span>
-                  <span className="font-semibold" style={{ color: colors.goldPrimary }}>09:00 - 18:00</span>
+                  <span className="font-semibold" style={{ color: colors.goldPrimary }}>Închis</span>
                 </div>
               </div>
             </div>
