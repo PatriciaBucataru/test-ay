@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { getDeviceOptimizedStyles } from '../utils/deviceDetection';
 
 export default function ContactPage() {
   const [particles, setParticles] = useState([]);
+  const deviceStyles = getDeviceOptimizedStyles();
 
   useEffect(() => {
-    const newParticles = Array.from({ length: 55 }, (_, i) => ({
+    const newParticles = Array.from({ length: deviceStyles.particleCount }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
@@ -89,8 +91,10 @@ export default function ContactPage() {
             background: 'radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 248, 220, 0.9) 20%, rgba(237, 205, 103, 0.7) 40%, rgba(237, 205, 103, 0.3) 100%)',
             animation: `float ${particle.duration}s ease-in-out infinite`,
             animationDelay: `${particle.delay}s`,
-            boxShadow: '0 0 30px rgba(237, 205, 103, 0.9), 0 0 50px rgba(255, 248, 220, 0.6), 0 0 70px rgba(255, 255, 255, 0.4)',
-            filter: 'blur(1px)',
+            boxShadow: deviceStyles.getParticleShadow(),
+            filter: deviceStyles.getParticleFilter(),
+            willChange: 'transform, opacity',
+            transform: 'translateZ(0)',
           }}
         />
       ))}
@@ -158,22 +162,14 @@ export default function ContactPage() {
           <div className="space-y-8">
             {/* Address */}
             <div
-              className="backdrop-blur-sm rounded-2xl p-8 relative overflow-hidden"
+              className={`rounded-2xl p-8 relative overflow-hidden ${deviceStyles.getBackdropClass()}`}
               style={{
                 background: 'rgba(144, 174, 131, 0.3)',
                 border: `2px solid ${colors.goldPrimary}`,
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2), 0 0 50px rgba(237, 205, 103, 0.5), inset 0 0 60px rgba(255, 248, 220, 0.1)',
-                animation: 'pulseGlow 4s ease-in-out infinite'
+                boxShadow: deviceStyles.getBoxShadow(false),
+                transform: 'translateZ(0)',
               }}
             >
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background: 'linear-gradient(90deg, transparent 0%, rgba(255, 248, 220, 0.2) 50%, transparent 100%)',
-                  animation: 'shimmerLight 6s ease-in-out infinite',
-                  width: '50%',
-                }}
-              />
               <h3
                 className="font-display text-2xl mb-4"
                 style={{ color: colors.goldPrimary, textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)' }}
@@ -192,22 +188,14 @@ export default function ContactPage() {
 
             {/* Opening Hours */}
             <div
-              className="backdrop-blur-sm rounded-2xl p-8 relative overflow-hidden"
+              className={`rounded-2xl p-8 relative overflow-hidden ${deviceStyles.getBackdropClass()}`}
               style={{
                 background: 'rgba(144, 174, 131, 0.3)',
                 border: `2px solid ${colors.goldPrimary}`,
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2), 0 0 50px rgba(237, 205, 103, 0.5), inset 0 0 60px rgba(255, 248, 220, 0.1)',
-                animation: 'pulseGlow 4s ease-in-out infinite'
+                boxShadow: deviceStyles.getBoxShadow(false),
+                transform: 'translateZ(0)',
               }}
             >
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background: 'linear-gradient(90deg, transparent 0%, rgba(255, 248, 220, 0.2) 50%, transparent 100%)',
-                  animation: 'shimmerLight 7s ease-in-out infinite',
-                  width: '50%',
-                }}
-              />
               <h3
                 className="font-display text-2xl mb-4"
                 style={{ color: colors.goldPrimary, textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)' }}
@@ -228,22 +216,14 @@ export default function ContactPage() {
 
             {/* Contact Details */}
             <div
-              className="backdrop-blur-sm rounded-2xl p-8 relative overflow-hidden"
+              className={`rounded-2xl p-8 relative overflow-hidden ${deviceStyles.getBackdropClass()}`}
               style={{
                 background: 'rgba(144, 174, 131, 0.3)',
                 border: `2px solid ${colors.goldPrimary}`,
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2), 0 0 50px rgba(237, 205, 103, 0.5), inset 0 0 60px rgba(255, 248, 220, 0.1)',
-                animation: 'pulseGlow 4s ease-in-out infinite'
+                boxShadow: deviceStyles.getBoxShadow(false),
+                transform: 'translateZ(0)',
               }}
             >
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background: 'linear-gradient(90deg, transparent 0%, rgba(255, 248, 220, 0.2) 50%, transparent 100%)',
-                  animation: 'shimmerLight 8s ease-in-out infinite',
-                  width: '50%',
-                }}
-              />
               <h3
                 className="font-display text-2xl mb-4"
                 style={{ color: colors.goldPrimary, textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)' }}
@@ -276,22 +256,14 @@ export default function ContactPage() {
 
             {/* Social Media */}
             <div
-              className="backdrop-blur-sm rounded-2xl p-8 relative overflow-hidden"
+              className={`rounded-2xl p-8 relative overflow-hidden ${deviceStyles.getBackdropClass()}`}
               style={{
                 background: 'rgba(144, 174, 131, 0.3)',
                 border: `2px solid ${colors.goldPrimary}`,
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2), 0 0 50px rgba(237, 205, 103, 0.5), inset 0 0 60px rgba(255, 248, 220, 0.1)',
-                animation: 'pulseGlow 4s ease-in-out infinite'
+                boxShadow: deviceStyles.getBoxShadow(false),
+                transform: 'translateZ(0)',
               }}
             >
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background: 'linear-gradient(90deg, transparent 0%, rgba(255, 248, 220, 0.2) 50%, transparent 100%)',
-                  animation: 'shimmerLight 5s ease-in-out infinite',
-                  width: '50%',
-                }}
-              />
               <h3
                 className="font-display text-2xl mb-4"
                 style={{ color: colors.goldPrimary, textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)' }}
@@ -318,22 +290,22 @@ export default function ContactPage() {
           {/* Map */}
           <div className="lg:sticky lg:top-24 h-fit">
             <div
-              className="backdrop-blur-sm rounded-2xl p-4"
+              className="rounded-2xl p-4"
               style={{
-                background: 'rgba(144, 174, 131, 0.3)',
+                background: 'rgba(144, 174, 131, 0.9)',
                 border: `3px solid ${colors.goldPrimary}`,
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 60px rgba(237, 205, 103, 0.6), 0 0 100px rgba(255, 248, 220, 0.4)',
-                animation: 'pulseGlow 3s ease-in-out infinite'
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 60px rgba(237, 205, 103, 0.6)',
+                transform: 'translateZ(0)',
               }}
             >
-              <div className="w-full h-[500px] lg:h-[700px] rounded-xl overflow-hidden">
+              <div className="w-full h-[500px] lg:h-[700px] rounded-xl overflow-hidden relative">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2847.8364087505856!2d26.0956!3d44.4758!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b1ff4f1b0e0001%3A0x1!2sStrada%20Madrigalului%2C%20Bucure%C8%99ti!5e0!3m2!1sen!2sro!4v1234567890"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
                   allowFullScreen=""
-                  loading="lazy"
+                  loading="eager"
                   referrerPolicy="no-referrer-when-downgrade"
                   title="House of Aya Location"
                 ></iframe>

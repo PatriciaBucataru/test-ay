@@ -4,12 +4,14 @@ import AboutSection from '../components/AboutSection';
 import ExperiencesSection from '../components/ExperiencesSection';
 import SubscriptionsSection from '../components/SubscriptionsSection';
 import Footer from '../components/Footer';
+import { getDeviceOptimizedStyles } from '../utils/deviceDetection';
 
 const GoldenParticles = () => {
   const [particles, setParticles] = useState([]);
+  const deviceStyles = getDeviceOptimizedStyles();
 
   useEffect(() => {
-    const newParticles = Array.from({ length: 30 }, (_, i) => ({
+    const newParticles = Array.from({ length: deviceStyles.particleCount }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
@@ -25,19 +27,19 @@ const GoldenParticles = () => {
       <style>{`
         @keyframes float {
           0%, 100% {
-            transform: translateY(0px) translateX(0px);
+            transform: translate3d(0, 0, 0);
             opacity: 0.4;
           }
           25% {
-            transform: translateY(-20px) translateX(10px);
+            transform: translate3d(10px, -20px, 0);
             opacity: 0.6;
           }
           50% {
-            transform: translateY(-40px) translateX(-10px);
+            transform: translate3d(-10px, -40px, 0);
             opacity: 0.5;
           }
           75% {
-            transform: translateY(-20px) translateX(-12px);
+            transform: translate3d(-12px, -20px, 0);
             opacity: 0.6;
           }
         }
@@ -48,6 +50,7 @@ const GoldenParticles = () => {
         className="absolute inset-0 pointer-events-none"
         style={{
           background: 'radial-gradient(circle at 20% 30%, rgba(237, 205, 103, 0.06) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(255, 248, 220, 0.04) 0%, transparent 40%)',
+          transform: 'translateZ(0)',
         }}
       />
 
@@ -65,8 +68,10 @@ const GoldenParticles = () => {
               background: 'radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 248, 220, 0.6) 20%, rgba(237, 205, 103, 0.4) 40%, rgba(237, 205, 103, 0.15) 100%)',
               animation: `float ${particle.duration}s ease-in-out infinite`,
               animationDelay: `${particle.delay}s`,
-              boxShadow: '0 0 10px rgba(237, 205, 103, 0.4), 0 0 20px rgba(255, 248, 220, 0.3), 0 0 30px rgba(255, 255, 255, 0.2)',
-              filter: 'blur(0.5px)',
+              boxShadow: deviceStyles.getParticleShadow(),
+              filter: deviceStyles.getParticleFilter(),
+              willChange: 'transform, opacity',
+              transform: 'translateZ(0)',
             }}
           />
         ))}
@@ -145,7 +150,7 @@ export default function HomePage() {
       <div className={`fixed inset-0 z-40 transition-all duration-500 ${
         menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
       }`}>
-        <div className="absolute inset-0 bg-stone-100/95 backdrop-blur-lg" onClick={() => setMenuOpen(false)} />
+        <div className="absolute inset-0 bg-stone-100/98" onClick={() => setMenuOpen(false)} style={{ transform: 'translateZ(0)' }} />
         <div className="relative h-full flex flex-col items-center justify-center gap-8">
           {navItems.map((item, index) => (
             item.href.startsWith('/') ? (
@@ -234,42 +239,14 @@ export default function HomePage() {
                 </p>
                 <div className="mt-6 flex justify-center lg:justify-start">
                   <div className="relative">
-                    {/* Outer Halo */}
-                    <div
-                      className="absolute inset-0 rounded-full"
-                      style={{
-                        width: '140px',
-                        height: '140px',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        background: 'radial-gradient(circle, rgba(255, 248, 220, 0.6) 0%, rgba(237, 205, 103, 0.5) 25%, rgba(255, 248, 220, 0.3) 50%, transparent 75%)',
-                        filter: 'blur(20px)',
-                        boxShadow: '0 0 60px rgba(237, 205, 103, 0.7), 0 0 100px rgba(255, 248, 220, 0.5)'
-                      }}
-                    />
-
-                    {/* Inner Glow */}
-                    <div
-                      className="absolute inset-0 rounded-full"
-                      style={{
-                        width: '110px',
-                        height: '110px',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        background: 'radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(237, 205, 103, 0.5) 35%, rgba(255, 248, 220, 0.4) 60%, transparent 80%)',
-                        filter: 'blur(10px)',
-                      }}
-                    />
-
                     {/* Logo Container */}
                     <div
                       className="w-20 h-20 lg:w-24 lg:h-24 rounded-full border-2 flex items-center justify-center relative"
                       style={{
                         borderColor: '#edcd67',
-                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3), 0 0 25px rgba(237, 205, 103, 0.7), 0 0 40px rgba(255, 248, 220, 0.5), inset 0 0 20px rgba(255, 248, 220, 0.2)',
-                        backgroundColor: 'rgba(255, 255, 255, 0.08)'
+                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3), 0 0 20px rgba(237, 205, 103, 0.6)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                        transform: 'translateZ(0)',
                       }}
                     >
                       <div className="absolute inset-0 rounded-full border m-1" style={{ borderColor: '#edcd67' }}></div>
@@ -308,10 +285,6 @@ export default function HomePage() {
             {/* Desktop Image - Hidden on Mobile */}
             <div className="hidden lg:block order-1 lg:order-2 relative">
               <div className="relative">
-                {/* Decorative Elements */}
-                <div className="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br from-amber-200/20 to-transparent rounded-full blur-3xl" />
-                <div className="absolute -bottom-10 -left-10 w-60 h-60 bg-gradient-to-tr from-[#6b7c5e]/10 to-transparent rounded-full blur-3xl" />
-
                 {/* Image Container */}
                 <div className="relative overflow-hidden rounded-[2rem] lg:rounded-[3rem] lg:h-[75vh] shadow-xl">
                   <div className="aspect-auto h-full relative">

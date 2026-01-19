@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { getDeviceOptimizedStyles } from '../utils/deviceDetection';
 
 const subscriptions = [
   {
@@ -100,9 +101,10 @@ const subscriptions = [
 
 export default function SubscriptionsSection() {
   const [particles, setParticles] = useState([]);
+  const deviceStyles = getDeviceOptimizedStyles();
 
   useEffect(() => {
-    const newParticles = Array.from({ length: 40 }, (_, i) => ({
+    const newParticles = Array.from({ length: deviceStyles.particleCount }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
@@ -166,8 +168,10 @@ export default function SubscriptionsSection() {
             background: 'radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 248, 220, 0.6) 20%, rgba(237, 205, 103, 0.4) 40%, rgba(237, 205, 103, 0.15) 100%)',
             animation: `float ${particle.duration}s ease-in-out infinite`,
             animationDelay: `${particle.delay}s`,
-            boxShadow: '0 0 10px rgba(237, 205, 103, 0.4), 0 0 20px rgba(255, 248, 220, 0.3), 0 0 30px rgba(255, 255, 255, 0.2)',
-            filter: 'blur(0.5px)',
+            boxShadow: deviceStyles.getParticleShadow(),
+            filter: deviceStyles.getParticleFilter(),
+            willChange: 'transform, opacity',
+            transform: 'translateZ(0)',
           }}
         />
       ))}
@@ -205,7 +209,7 @@ export default function SubscriptionsSection() {
           {subscriptions.map((sub) => (
             <div
               key={sub.id}
-              className={`relative backdrop-blur-sm rounded-3xl p-8 transition-all duration-300 hover:scale-105 ${
+              className={`relative ${deviceStyles.getBackdropClass()} rounded-3xl p-8 transition-all duration-300 hover:scale-105 ${
                 sub.featured ? 'md:col-span-2 lg:col-span-1' : ''
               }`}
               style={{
@@ -213,9 +217,9 @@ export default function SubscriptionsSection() {
                   ? 'rgba(237, 205, 103, 0.15)'
                   : 'rgba(144, 174, 131, 0.3)',
                 border: `2px solid ${colors.goldPrimary}`,
-                boxShadow: sub.featured
-                  ? '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 60px rgba(237, 205, 103, 0.6), inset 0 0 80px rgba(255, 248, 220, 0.15)'
-                  : '0 8px 32px rgba(0, 0, 0, 0.2), 0 0 40px rgba(237, 205, 103, 0.4), inset 0 0 60px rgba(255, 248, 220, 0.1)'
+                boxShadow: deviceStyles.getBoxShadow(sub.featured),
+                transform: 'translateZ(0)',
+                willChange: 'transform',
               }}
             >
               {/* Membership Name */}

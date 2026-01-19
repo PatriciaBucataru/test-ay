@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { getDeviceOptimizedStyles } from '../utils/deviceDetection';
 
 export default function AboutSection() {
   const [particles, setParticles] = useState([]);
+  const deviceStyles = getDeviceOptimizedStyles();
 
   useEffect(() => {
-    const newParticles = Array.from({ length: 60 }, (_, i) => ({
+    const newParticles = Array.from({ length: deviceStyles.particleCount }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
@@ -89,8 +91,8 @@ export default function AboutSection() {
             background: 'radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 248, 220, 0.9) 20%, rgba(237, 205, 103, 0.7) 40%, rgba(237, 205, 103, 0.3) 100%)',
             animation: `float ${particle.duration}s ease-in-out infinite`,
             animationDelay: `${particle.delay}s`,
-            boxShadow: '0 0 30px rgba(237, 205, 103, 0.9), 0 0 50px rgba(255, 248, 220, 0.6), 0 0 70px rgba(255, 255, 255, 0.4)',
-            filter: 'blur(1px)',
+            boxShadow: deviceStyles.getParticleShadow(),
+            filter: deviceStyles.getParticleFilter(),
           }}
         />
       ))}
@@ -221,23 +223,14 @@ export default function AboutSection() {
 
         {/* What is AYA */}
         <div
-          className="max-w-3xl mx-auto backdrop-blur-sm rounded-3xl p-8 lg:p-12 relative overflow-hidden"
+          className={`max-w-3xl mx-auto rounded-3xl p-8 lg:p-12 relative overflow-hidden ${deviceStyles.getBackdropClass()}`}
           style={{
             background: 'rgba(144, 174, 131, 0.3)',
             border: `2px solid ${colors.goldPrimary}`,
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2), 0 0 50px rgba(237, 205, 103, 0.5), inset 0 0 60px rgba(255, 248, 220, 0.1)',
-            animation: 'pulseGlow 4s ease-in-out infinite'
+            boxShadow: deviceStyles.getBoxShadow(false),
+            transform: 'translateZ(0)',
           }}
         >
-          {/* Shimmer effect overlay */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: 'linear-gradient(90deg, transparent 0%, rgba(255, 248, 220, 0.3) 50%, transparent 100%)',
-              animation: 'shimmerLight 6s ease-in-out infinite',
-              width: '50%',
-            }}
-          />
           <h3
             className="font-display text-3xl lg:text-4xl font-light mb-6 text-center"
             style={{

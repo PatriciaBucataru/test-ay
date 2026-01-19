@@ -7,7 +7,10 @@
       "Bash(npm install:*)",
       "Bash(node convert-images.js:*)",
       "Bash(node:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(ls:*)",
+      "Bash(awk:*)"
     ],
     "deny": [],
     "ask": []

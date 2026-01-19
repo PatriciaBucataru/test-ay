@@ -1,3 +1,5 @@
+import { getDeviceOptimizedStyles } from '../utils/deviceDetection';
+
 const experiences = [
   {
     id: 1,
@@ -34,6 +36,8 @@ const experiences = [
 ];
 
 export default function ExperiencesSection() {
+  const deviceStyles = getDeviceOptimizedStyles();
+
   return (
     <section id="experiences" className="relative py-20 lg:py-32 bg-gradient-to-b from-[#d4ddc9] to-[#c8d5b9] pb-24">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -53,14 +57,18 @@ export default function ExperiencesSection() {
           {experiences.map((experience, index) => (
             <div
               key={experience.id}
-              className="group relative bg-white/30 backdrop-blur-sm rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
+              className={`relative rounded-3xl overflow-hidden shadow-lg ${deviceStyles.getBackdropClass()}`}
+              style={{
+                background: 'rgba(255, 255, 255, 0.85)',
+                transform: 'translateZ(0)',
+              }}
             >
               {/* Image */}
               <div className="relative h-80 lg:h-96 overflow-hidden">
                 <img
                   src={experience.image}
                   alt={experience.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-cover"
                   loading="lazy"
                   width="800"
                   height="600"
