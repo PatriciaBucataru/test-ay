@@ -11,7 +11,8 @@
       "Bash(git remote set-url:*)",
       "Bash(ls:*)",
       "Bash(awk:*)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(git remote add:*)"
     ],
     "deny": [],
     "ask": []

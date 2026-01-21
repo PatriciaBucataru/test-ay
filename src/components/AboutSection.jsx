@@ -132,7 +132,7 @@ export default function AboutSection() {
               }}
             >
               <img
-                src="/images/about.jpg"
+                src="/images/new/entrance.webp"
                 alt="House of Aya Space"
                 className="w-full h-full object-cover"
               />

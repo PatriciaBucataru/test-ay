@@ -1,39 +1,200 @@
+import { useState } from 'react';
 import { getDeviceOptimizedStyles } from '../utils/deviceDetection';
 
 const experiences = [
   {
     id: 1,
-    title: "AYA Movement",
+    title: "The Core Temple",
     subtitle: "Where movement becomes meditation",
     description: "The space of the awakened body. Experience the power of Lagree fitness in our state-of-the-art studio.",
-    image: "/images/img3.jpg",
+    images: [
+      "/images/new/lagree3.webp",
+      "/images/new/lagree1.webp",
+      "/images/new/lagree2.webp"
+    ],
     icon: "🌿"
   },
   {
     id: 2,
-    title: "AYA Rituals",
+    title: "Private Strength Chamber",
     subtitle: "Moments of presence",
     description: "A collection of sensory experiences and wellness ceremonies designed to reconnect you with your essence.",
-    image: "/images/img1.jpg",
+    images: [
+      "/images/new/private1.webp",
+      "/images/new/private2.webp",
+      "/images/new/private3.webp"
+    ],
     icon: "☀️"
   },
   {
     id: 3,
-    title: "AYA Sanctum",
+    title: "Breath Chamber",
     subtitle: "Space of silence",
     description: "The sanctuary of introspection and wholeness. A place for meditation, sound healing, and inner peace.",
-    image: "/images/img2.jpg",
+    images: [
+      "/images/new/breath4.webp",
+      "/images/new/breath1.webp",
+      "/images/new/breath2.webp",
+      "/images/new/breath3.webp"
+    ],
     icon: "🌙"
   },
   {
     id: 4,
-    title: "AYA Elements",
+    title: "Aya Healing Jade Bed Room",
     subtitle: "Inspired by light and nature",
     description: "Curated products including aromas, candles, and elixirs to bring the AYA energy into your daily life.",
-    image: "/images/entrance.jpeg",
+    images: [
+      "/images/new/jade2.webp",
+      "/images/new/jade1.webp"
+    ],
     icon: "💧"
+  },
+  {
+    id: 5,
+    title: "Beauty Rituals",
+    subtitle: "Radiance from within",
+    description: "A sanctuary of beauty and self-care. Experience transformative beauty treatments that honor your natural essence.",
+    images: [
+      "/images/new/beauty1.webp",
+      "/images/new/beauty2.webp",
+      "/images/new/beauty3.webp"
+    ],
+    icon: "✨"
+  },
+  {
+    id: 6,
+    title: "AI Strength Training",
+    subtitle: "Precision-guided power",
+    description: "Experience the future of fitness with AI-powered strength training. Personalized guidance and real-time feedback for optimal results.",
+    images: [
+      "/images/new/strength1.webp",
+      "/images/new/strength2.webp",
+      "/images/new/strength3.webp"
+    ],
+    icon: "💪"
+  },
+  {
+    id: 7,
+    title: "Aya Rituals",
+    subtitle: "Sacred moments of transformation",
+    description: "Immerse yourself in ancient wellness practices and modern healing ceremonies. A holistic journey of renewal and connection.",
+    images: [
+      "/images/new/up2.webp",
+      "/images/new/up1.webp",
+      "/images/new/up3.webp"
+    ],
+    icon: "🕉️"
   }
 ];
+
+function ImageCarousel({ images, title }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+
+  const goToPrevious = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
+
+  const goToNext = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  // Minimum swipe distance (in px)
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e) => {
+    setTouchEnd(0); // Reset touch end
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      goToNext();
+    } else if (isRightSwipe) {
+      goToPrevious();
+    }
+  };
+
+  return (
+    <div
+      className="relative h-96 lg:h-[500px] overflow-hidden group"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
+      {/* Images */}
+      {images.map((image, index) => (
+        <img
+          key={index}
+          src={image}
+          alt={`${title} - Image ${index + 1}`}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+            index === currentIndex ? 'opacity-100' : 'opacity-0'
+          }`}
+          loading="lazy"
+          width="800"
+          height="600"
+        />
+      ))}
+
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+
+      {/* Navigation Arrows */}
+      <button
+        onClick={goToPrevious}
+        className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white/30"
+        aria-label="Previous image"
+      >
+        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <button
+        onClick={goToNext}
+        className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white/30"
+        aria-label="Next image"
+      >
+        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+
+      {/* Dots Indicator */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+        {images.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className={`w-2 h-2 rounded-full transition-all ${
+              index === currentIndex
+                ? 'bg-white w-8'
+                : 'bg-white/50 hover:bg-white/75'
+            }`}
+            aria-label={`Go to image ${index + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function ExperiencesSection() {
   const deviceStyles = getDeviceOptimizedStyles();
@@ -63,30 +224,20 @@ export default function ExperiencesSection() {
                 transform: 'translateZ(0)',
               }}
             >
-              {/* Image */}
-              <div className="relative h-80 lg:h-96 overflow-hidden">
-                <img
-                  src={experience.image}
-                  alt={experience.title}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                  width="800"
-                  height="600"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-              </div>
+              {/* Image Carousel */}
+              <ImageCarousel images={experience.images} title={experience.title} />
 
               {/* Content */}
-              <div className="p-8 lg:p-10">
-                <h3 className="font-display text-3xl lg:text-4xl font-light text-[#6b7c5e] mb-4">
+              <div className="p-6 lg:p-8">
+                <h3 className="font-display text-2xl lg:text-3xl font-light text-[#6b7c5e] mb-2">
                   {experience.title}
                 </h3>
 
-                <p className="font-display text-lg text-[#8b7355] italic mb-4">
+                <p className="font-display text-base text-[#8b7355] italic mb-2">
                   {experience.subtitle}
                 </p>
 
-                <p className="font-body text-base text-[#8b7355]/90 leading-relaxed">
+                <p className="font-body text-sm text-[#8b7355]/90 leading-relaxed">
                   {experience.description}
                 </p>
               </div>
