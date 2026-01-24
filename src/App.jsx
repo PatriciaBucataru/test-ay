@@ -9,7 +9,17 @@ import ContactPage from './pages/ContactPage';
 import Event15Page from './pages/Event15Page';
 import Event16Page from './pages/Event16Page';
 import Event17Page from './pages/Event17Page';
-import Event15ENPage from './pages/Event15ENPage';  // <-- Aici
+import Event15ENPage from './pages/Event15ENPage';
+
+// Room/Experience Pages
+import OurRoomsPage from './pages/OurRoomsPage';
+import CoreTemplePage from './pages/CoreTemplePage';
+import PrivateStrengthPage from './pages/PrivateStrengthPage';
+import BreathChamberPage from './pages/BreathChamberPage';
+import JadeBedRoomPage from './pages/JadeBedRoomPage';
+import BeautyRitualsPage from './pages/BeautyRitualsPage';
+import AIStrengthPage from './pages/AIStrengthPage';
+import AyaRitualsPage from './pages/AyaRitualsPage';
 
 export default function App() {
   console.log("App loaded!"); 
@@ -108,6 +118,16 @@ export default function App() {
         <Route path="/16-ianuarie" element={<Event16Page />} />
         <Route path="/17-ianuarie" element={<Event17Page />} />
         <Route path="/en/january-15" element={<Event15ENPage />} />
+
+        {/* Room/Experience Routes */}
+        <Route path="/our-rooms" element={<OurRoomsPage />} />
+        <Route path="/core-temple" element={<CoreTemplePage />} />
+        <Route path="/private-strength" element={<PrivateStrengthPage />} />
+        <Route path="/breath-chamber" element={<BreathChamberPage />} />
+        <Route path="/jade-bed-room" element={<JadeBedRoomPage />} />
+        <Route path="/beauty-rituals" element={<BeautyRitualsPage />} />
+        <Route path="/ai-strength" element={<AIStrengthPage />} />
+        <Route path="/aya-rituals" element={<AyaRitualsPage />} />
 
         {/* Hidden Routes - Will be enabled when needed */}
         {/* <Route path="/coming-soon" element={<ComingSoonPage />} /> */}

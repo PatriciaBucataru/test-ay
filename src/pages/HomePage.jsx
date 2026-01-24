@@ -84,6 +84,7 @@ export default function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navItems = [
+    { label: 'OUR ROOMS', href: '/our-rooms' },
     { label: 'CONTACT', href: '/contact' },
     { label: 'ABOUT US', href: '#about' },
     { label: 'EXPLORE', href: '#experiences' }

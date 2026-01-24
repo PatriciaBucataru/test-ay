@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getDeviceOptimizedStyles } from '../utils/deviceDetection';
 
 const experiences = [
@@ -7,6 +8,7 @@ const experiences = [
     title: "The Core Temple",
     subtitle: "Where movement becomes meditation",
     description: "The space of the awakened body. Experience the power of Lagree fitness in our state-of-the-art studio.",
+    path: "/core-temple",
     images: [
       "/images/new/lagree3.webp",
       "/images/new/lagree1.webp",
@@ -19,6 +21,7 @@ const experiences = [
     title: "Private Strength Chamber",
     subtitle: "Moments of presence",
     description: "A collection of sensory experiences and wellness ceremonies designed to reconnect you with your essence.",
+    path: "/private-strength",
     images: [
       "/images/new/private1.webp",
       "/images/new/private2.webp",
@@ -31,6 +34,7 @@ const experiences = [
     title: "Breath Chamber",
     subtitle: "Space of silence",
     description: "The sanctuary of introspection and wholeness. A place for meditation, sound healing, and inner peace.",
+    path: "/breath-chamber",
     images: [
       "/images/new/breath4.webp",
       "/images/new/breath1.webp",
@@ -44,6 +48,7 @@ const experiences = [
     title: "Aya Healing Jade Bed Room",
     subtitle: "Inspired by light and nature",
     description: "Curated products including aromas, candles, and elixirs to bring the AYA energy into your daily life.",
+    path: "/jade-bed-room",
     images: [
       "/images/new/jade2.webp",
       "/images/new/jade1.webp"
@@ -55,6 +60,7 @@ const experiences = [
     title: "Beauty Rituals",
     subtitle: "Radiance from within",
     description: "A sanctuary of beauty and self-care. Experience transformative beauty treatments that honor your natural essence.",
+    path: "/beauty-rituals",
     images: [
       "/images/new/beauty1.webp",
       "/images/new/beauty2.webp",
@@ -67,6 +73,7 @@ const experiences = [
     title: "AI Strength Training",
     subtitle: "Precision-guided power",
     description: "Experience the future of fitness with AI-powered strength training. Personalized guidance and real-time feedback for optimal results.",
+    path: "/ai-strength",
     images: [
       "/images/new/strength1.webp",
       "/images/new/strength2.webp",
@@ -79,6 +86,7 @@ const experiences = [
     title: "Aya Rituals",
     subtitle: "Sacred moments of transformation",
     description: "Immerse yourself in ancient wellness practices and modern healing ceremonies. A holistic journey of renewal and connection.",
+    path: "/aya-rituals",
     images: [
       "/images/new/up2.webp",
       "/images/new/up1.webp",
@@ -216,9 +224,10 @@ export default function ExperiencesSection() {
         {/* Experiences Grid */}
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
           {experiences.map((experience, index) => (
-            <div
+            <Link
               key={experience.id}
-              className={`relative rounded-3xl overflow-hidden shadow-lg ${deviceStyles.getBackdropClass()}`}
+              to={experience.path}
+              className={`relative rounded-3xl overflow-hidden shadow-lg ${deviceStyles.getBackdropClass()} block transition-transform hover:scale-105`}
               style={{
                 background: 'rgba(255, 255, 255, 0.85)',
                 transform: 'translateZ(0)',
@@ -237,11 +246,15 @@ export default function ExperiencesSection() {
                   {experience.subtitle}
                 </p>
 
-                <p className="font-body text-sm text-[#8b7355]/90 leading-relaxed">
+                <p className="font-body text-sm text-[#8b7355]/90 leading-relaxed mb-4">
                   {experience.description}
                 </p>
+
+                <span className="inline-flex items-center gap-2 text-[#6b7c5e] font-body text-sm font-semibold">
+                  Learn More →
+                </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
