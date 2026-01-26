@@ -34,7 +34,7 @@ const useScrollAnimation = () => {
   return [ref, isVisible];
 };
 
-export default function PrivateStrengthPage() {
+export default function AIGreenhousePage() {
   const colors = {
     goldPrimary: '#edcd67',
     goldSecondary: '#f0db8e'
@@ -60,6 +60,9 @@ export default function PrivateStrengthPage() {
   const [ref5, isVisible5] = useScrollAnimation();
 
   useEffect(() => {
+    // Scroll to top on page load
+    window.scrollTo(0, 0);
+
     const newParticles = Array.from({ length: deviceStyles.particleCount * 1.5 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
@@ -190,63 +193,34 @@ export default function PrivateStrengthPage() {
               fontWeight: '300'
             }}
           >
-            Private Lagree Room
+            The AI Greenhouse
           </h1>
           <p
             className="font-display text-lg lg:text-xl tracking-wide"
             style={{ color: colors.goldSecondary, textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)', fontWeight: '300' }}
           >
-            Experiența Individuală
+            Sera de la AI
           </p>
         </div>
 
-        {/* Section 1: Intro text centered */}
+        {/* Section 1: Intro text */}
         <div ref={ref1} className={`max-w-4xl mx-auto text-center mb-20 lg:mb-32 animate-on-scroll ${isVisible1 ? 'visible' : ''}`}>
           <p className="font-display text-lg lg:text-xl leading-relaxed mb-6" style={{ color: colors.goldSecondary, fontWeight: '300' }}>
-            Private Lagree Room este spațiul dedicat transformării personale, în ritmul tău.
-            Un cadru exclusiv, intim și concentrat, unde atenția este 100% asupra ta, iar fiecare mișcare este ajustată fin pentru corpul tău.
+            The AI Greenhouse este spațiul de respiro și integrare din jurul zonei de antrenament cu inteligență artificială.
+            O seră vie, calmă și luminoasă, creată pentru a aduce natura în dialog direct cu tehnologia.
           </p>
           <p className="font-display text-lg lg:text-xl leading-relaxed mb-6" style={{ color: colors.goldSecondary, fontWeight: '300' }}>
-            Aici, Lagree devine o experiență profund personalizată.
-          </p>
-          <p className="font-display text-lg lg:text-xl leading-relaxed" style={{ color: colors.goldSecondary, fontWeight: '300' }}>
-            Fără grabă. Fără comparație. Doar prezență, precizie și progres real.
+            Aici, verdele temperează intensitatea, iar respirația își regăsește ritmul după efort.
+            Este locul unde corpul se așază, mintea se liniștește, iar energia se reechilibrează.
           </p>
         </div>
 
-        {/* Section 2: Large hero image */}
-        <div ref={ref2} className={`relative mb-20 lg:mb-32 animate-on-scroll ${isVisible2 ? 'visible' : ''}`}>
-          <div
-            className="relative h-[400px] lg:h-[600px] overflow-hidden rounded-3xl"
-            style={{
-              boxShadow: '0 8px 40px rgba(0, 0, 0, 0.25), 0 0 60px rgba(237, 205, 103, 0.6), 0 0 100px rgba(255, 248, 220, 0.4), inset 0 0 80px rgba(237, 205, 103, 0.15)',
-              border: `2px solid ${colors.goldPrimary}`,
-            }}
-          >
+        {/* Section 2: Images grid */}
+        <div ref={ref2} className={`grid lg:grid-cols-2 gap-6 lg:gap-8 mb-20 lg:mb-32 animate-on-scroll ${isVisible2 ? 'visible' : ''}`}>
+          <div className="relative h-[400px] lg:h-[600px] overflow-hidden rounded-3xl">
             <img
-              src="/images/new/private1.webp"
-              alt="Aya Strength Room"
-              className="w-full h-full object-cover"
-            />
-            {/* Bottom to top gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            {/* Subtle glowy overlay */}
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background: `radial-gradient(circle at 50% 80%, rgba(237, 205, 103, 0.08) 0%, transparent 60%),
-                             radial-gradient(circle at 30% 30%, rgba(255, 248, 220, 0.06) 0%, transparent 50%)`
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Section 3: Image grid - 2 photos side by side */}
-        <div ref={ref3} className={`grid lg:grid-cols-2 gap-6 lg:gap-8 mb-20 lg:mb-32 animate-on-scroll ${isVisible3 ? 'visible' : ''}`}>
-          <div className="relative h-[350px] lg:h-[500px] overflow-hidden rounded-3xl">
-            <img
-              src="/images/new/private2.webp"
-              alt="Strength Training Space"
+              src="/images/new/sera1.webp"
+              alt="The AI Greenhouse"
               className="w-full h-full object-cover"
             />
             <div
@@ -256,10 +230,10 @@ export default function PrivateStrengthPage() {
               }}
             />
           </div>
-          <div className="relative h-[350px] lg:h-[500px] overflow-hidden rounded-3xl">
+          <div className="relative h-[400px] lg:h-[600px] overflow-hidden rounded-3xl">
             <img
-              src="/images/new/private3.webp"
-              alt="Training Equipment"
+              src="/images/new/sera2.webp"
+              alt="Greenhouse Interior"
               className="w-full h-full object-cover"
             />
             <div
@@ -271,10 +245,10 @@ export default function PrivateStrengthPage() {
           </div>
         </div>
 
-        {/* Section 4: Lagree 1:1 Content */}
+        {/* Section 3: Nature Content */}
         <div
-          ref={ref4}
-          className={`rounded-3xl p-12 lg:p-16 max-w-5xl mx-auto relative mb-20 lg:mb-32 animate-on-scroll ${isVisible4 ? 'visible' : ''} ${deviceStyles.getBackdropClass()}`}
+          ref={ref3}
+          className={`rounded-3xl p-12 lg:p-16 max-w-5xl mx-auto relative mb-20 lg:mb-32 animate-on-scroll ${isVisible3 ? 'visible' : ''} ${deviceStyles.getBackdropClass()}`}
           style={{
             background: 'rgba(144, 174, 131, 0.3)',
             border: `1px solid ${colors.goldPrimary}`,
@@ -286,29 +260,34 @@ export default function PrivateStrengthPage() {
             className="font-display text-3xl lg:text-5xl mb-10 tracking-wide text-center"
             style={{ color: colors.goldPrimary, textShadow: '0 2px 8px rgba(0, 0, 0, 0.2)', fontWeight: '300' }}
           >
-            Lagree® 1:1 – Putere ghidată, cu atenție totală
+            Natura ca extensie a antrenamentului
           </h2>
+          <p
+            className="font-display text-lg lg:text-xl leading-relaxed mb-6"
+            style={{ color: colors.goldSecondary, fontWeight: '300' }}
+          >
+            The AI Greenhouse nu este un decor.
+            Este o parte esențială a experienței.
+          </p>
           <p
             className="font-display text-lg lg:text-xl leading-relaxed mb-8"
             style={{ color: colors.goldSecondary, fontWeight: '300' }}
           >
-            Sesiunile individuale Lagree sunt construite special pentru obiectivele tale: tonifiere, forță, recuperare, redefinire corporală sau susținere posturală.
-            Instructorul te ghidează pas cu pas, corectând execuția, ritmul și respirația, astfel încât fiecare secundă să conteze.
+            Plantele, lumina naturală și atmosfera aerată susțin recuperarea, reduc stresul și creează o tranziție firească între activare și relaxare. După un antrenament ghidat de AI, corpul are nevoie de integrare — iar natura știe exact cum să o ofere.
           </p>
 
           <h3
             className="font-display text-2xl lg:text-3xl mb-6 tracking-wide"
             style={{ color: colors.goldPrimary, textShadow: '0 2px 8px rgba(0, 0, 0, 0.2)', fontWeight: '300' }}
           >
-            Beneficiile sesiunilor private:
+            Beneficii ale spațiului:
           </h3>
-          <ul className="space-y-4 mb-8">
+          <ul className="space-y-4">
             {[
-              "adaptare completă la nivelul și nevoile tale",
-              "corectarea precisă a posturii și mișcărilor",
-              "progres accelerat, sigur și eficient",
-              "impact redus asupra articulațiilor",
-              "rezultate vizibile, fără suprasolicitare"
+              "calmarea sistemului nervos",
+              "susținerea recuperării post-antrenament",
+              "oxigenare, claritate și stare de bine",
+              "reconectare cu ritmul natural al corpului"
             ].map((benefit, index) => (
               <li
                 key={index}
@@ -320,13 +299,36 @@ export default function PrivateStrengthPage() {
               </li>
             ))}
           </ul>
+        </div>
 
-          <p
-            className="font-display text-lg lg:text-xl leading-relaxed text-center"
-            style={{ color: colors.goldSecondary, fontWeight: '300' }}
-          >
-            Lagree 1:1 este antrenamentul ideal atunci când vrei calitate maximă, nu compromisuri.
-          </p>
+        {/* Section 4: More images */}
+        <div ref={ref4} className={`grid lg:grid-cols-2 gap-6 lg:gap-8 mb-20 lg:mb-32 animate-on-scroll ${isVisible4 ? 'visible' : ''}`}>
+          <div className="relative h-[400px] lg:h-[600px] overflow-hidden rounded-3xl">
+            <img
+              src="/images/new/sera3.webp"
+              alt="Greenhouse Plants"
+              className="w-full h-full object-cover"
+            />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: `linear-gradient(180deg, rgba(90, 107, 77, 0.15) 0%, transparent 30%, transparent 70%, rgba(90, 107, 77, 0.2) 100%)`
+              }}
+            />
+          </div>
+          <div className="relative h-[400px] lg:h-[600px] overflow-hidden rounded-3xl">
+            <img
+              src="/images/new/sera4.webp"
+              alt="Greenhouse Atmosphere"
+              className="w-full h-full object-cover"
+            />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: `radial-gradient(circle at 30% 50%, rgba(237, 205, 103, 0.12) 0%, transparent 60%)`
+              }}
+            />
+          </div>
         </div>
 
         {/* Section 5: Experience */}
@@ -335,15 +337,15 @@ export default function PrivateStrengthPage() {
             className="font-display text-3xl lg:text-5xl mb-12 tracking-wide text-center"
             style={{ color: colors.goldPrimary, textShadow: '0 2px 8px rgba(0, 0, 0, 0.2)', fontWeight: '300' }}
           >
-            Experiența Private Lagree Room
+            Experiența The AI Greenhouse
           </h2>
 
           <div className="grid lg:grid-cols-2 gap-8 mb-12">
             {[
-              "Sesiuni individuale, complet personalizate",
-              "Instructor certificat, focus exclusiv",
-              "Spațiu premium, liniștit și elegant",
-              "Ritm controlat, siguranță și rezultate reale"
+              "Spațiu verde, luminos și aerisit",
+              "Zonă de pauză conștientă și reset",
+              "Armonie între tehnologie și natură",
+              "Design biophilic, elegant și viu"
             ].map((item, index) => (
               <div key={index} className="flex items-start gap-4">
                 <span style={{ color: colors.goldPrimary, fontSize: '1.5rem' }}>•</span>
@@ -361,7 +363,8 @@ export default function PrivateStrengthPage() {
             className="font-display text-lg lg:text-xl leading-relaxed text-center mb-8"
             style={{ color: colors.goldSecondary, fontWeight: '300' }}
           >
-            Private Lagree Room este locul unde corpul tău este ascultat cu adevărat.
+            The AI Greenhouse este locul unde forța întâlnește blândețea,
+            iar performanța este susținută de viață.
           </p>
         </div>
 
@@ -394,7 +397,7 @@ export default function PrivateStrengthPage() {
                 fontWeight: '300'
               }}
             >
-              Precision. Presence. Personal Power.
+              Recover. Breathe. Rebalance.
             </p>
           </div>
         </div>

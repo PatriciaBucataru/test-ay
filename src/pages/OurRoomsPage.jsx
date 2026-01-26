@@ -271,6 +271,20 @@ export default function OurRoomsPage() {
         "/images/new/up3.webp"
       ],
       layout: "medium"
+    },
+    {
+      id: 8,
+      title: "The AI Greenhouse",
+      subtitle: "Where tech meets nature",
+      path: "/ai-greenhouse",
+      icon: "🌱",
+      images: [
+        "/images/new/sera1.webp",
+        "/images/new/sera2.webp",
+        "/images/new/sera3.webp",
+        "/images/new/sera4.webp"
+      ],
+      layout: "wide"
     }
   ];
 
@@ -594,6 +608,54 @@ export default function OurRoomsPage() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Row 4: Wide Card - AI Greenhouse */}
+          <div
+            onClick={() => window.location.href = rooms[7].path}
+            className="group relative rounded-[2rem] overflow-hidden h-[350px] lg:h-[450px]"
+            style={{
+              boxShadow: '0 8px 40px rgba(0, 0, 0, 0.25), 0 0 60px rgba(237, 205, 103, 0.6), 0 0 100px rgba(255, 248, 220, 0.4), inset 0 0 80px rgba(237, 205, 103, 0.15)',
+              border: `2px solid ${colors.goldPrimary}`,
+              cursor: 'pointer',
+            }}
+          >
+            <img
+              src={rooms[7].images[0]}
+              alt={rooms[7].title}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            {/* Bottom to top gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            {/* Subtle glowy overlay */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: `radial-gradient(circle at 50% 80%, rgba(237, 205, 103, 0.08) 0%, transparent 60%),
+                             radial-gradient(circle at 30% 30%, rgba(255, 248, 220, 0.06) 0%, transparent 50%)`
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+            <div className="absolute bottom-0 left-0 right-0 p-8 lg:p-12">
+              <h2
+                className="font-display text-3xl lg:text-5xl font-light mb-2"
+                style={{
+                  color: colors.goldPrimary,
+                  textShadow: '0 0 20px rgba(237, 205, 103, 0.8), 0 0 40px rgba(255, 248, 220, 0.4), 0 2px 8px rgba(0, 0, 0, 0.5)'
+                }}
+              >
+                {rooms[7].title}
+              </h2>
+              <p
+                className="font-display text-lg lg:text-xl italic"
+                style={{
+                  color: colors.goldSecondary,
+                  textShadow: '0 0 15px rgba(240, 219, 142, 0.6), 0 2px 4px rgba(0, 0, 0, 0.5)'
+                }}
+              >
+                {rooms[7].subtitle}
+              </p>
             </div>
           </div>
         </div>

@@ -20,6 +20,7 @@ import JadeBedRoomPage from './pages/JadeBedRoomPage';
 import BeautyRitualsPage from './pages/BeautyRitualsPage';
 import AIStrengthPage from './pages/AIStrengthPage';
 import AyaRitualsPage from './pages/AyaRitualsPage';
+import AIGreenhousePage from './pages/AIGreenhousePage';
 
 export default function App() {
   console.log("App loaded!"); 
@@ -128,6 +129,7 @@ export default function App() {
         <Route path="/beauty-rituals" element={<BeautyRitualsPage />} />
         <Route path="/ai-strength" element={<AIStrengthPage />} />
         <Route path="/aya-rituals" element={<AyaRitualsPage />} />
+        <Route path="/ai-greenhouse" element={<AIGreenhousePage />} />
 
         {/* Hidden Routes - Will be enabled when needed */}
         {/* <Route path="/coming-soon" element={<ComingSoonPage />} /> */}
