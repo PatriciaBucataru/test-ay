@@ -1,6 +1,38 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { getDeviceOptimizedStyles } from '../utils/deviceDetection';
+
+// Hook for scroll animations
+const useScrollAnimation = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px',
+      }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
+
+  return [ref, isVisible];
+};
 
 export default function JadeBedRoomPage() {
   const colors = {
@@ -20,64 +52,100 @@ export default function JadeBedRoomPage() {
     });
   };
 
+  // Scroll animation refs
+  const [ref1, isVisible1] = useScrollAnimation();
+  const [ref2, isVisible2] = useScrollAnimation();
+  const [ref3, isVisible3] = useScrollAnimation();
+  const [ref4, isVisible4] = useScrollAnimation();
+
   useEffect(() => {
-    const newParticles = Array.from({ length: deviceStyles.particleCount * 1.0 }, (_, i) => ({
+    const newParticles = Array.from({ length: deviceStyles.particleCount * 1.5 }, (_, i) => ({
       id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
       size: Math.random() * 5 + 3,
-      left: Math.random() * 100,
-      animationDuration: Math.random() * 25 + 20,
-      animationDelay: Math.random() * 8,
-      opacity: Math.random() * 0.3 + 0.15,
+      duration: Math.random() * 10 + 6,
+      delay: Math.random() * 5
     }));
     setParticles(newParticles);
   }, [deviceStyles.particleCount]);
 
   return (
     <div
-      className="min-h-screen text-white relative overflow-hidden"
+      className="min-h-screen relative overflow-hidden"
       style={{
         background: 'linear-gradient(135deg, #8b9e7d 0%, #7a8d6e 25%, #6b7c5e 50%, #5e6f50 75%, #5a6b4d 100%)',
       }}
     >
-      {/* Golden Particles */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        {particles.map((particle) => (
+      {/* Radiant light overlay */}
+      <div
+        className="fixed inset-0 pointer-events-none z-0"
+        style={{
+          background: 'radial-gradient(circle at 20% 30%, rgba(237, 205, 103, 0.32) 0%, rgba(255, 248, 220, 0.18) 30%, transparent 55%), radial-gradient(circle at 80% 70%, rgba(255, 248, 220, 0.30) 0%, rgba(237, 205, 103, 0.15) 30%, transparent 55%), radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.10) 0%, transparent 65%), radial-gradient(circle at 10% 80%, rgba(255, 248, 220, 0.22) 0%, transparent 45%), radial-gradient(circle at 90% 20%, rgba(255, 248, 220, 0.18) 0%, transparent 45%)',
+          transform: 'translateZ(0)',
+        }}
+      />
+
+      {/* Animated particles */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        {particles.map(particle => (
           <div
             key={particle.id}
-            className="absolute rounded-full opacity-60"
+            className="absolute rounded-full"
             style={{
+              left: `${particle.x}%`,
+              top: `${particle.y}%`,
               width: `${particle.size}px`,
               height: `${particle.size}px`,
-              left: `${particle.left}%`,
-              background: `radial-gradient(circle, rgba(255, 255, 255, 0.9), ${colors.goldPrimary}, ${colors.goldSecondary})`,
-              boxShadow: `0 0 ${particle.size * 3}px ${colors.goldPrimary}, 0 0 ${particle.size * 5}px rgba(255, 248, 220, 0.4)`,
-              animation: `floatParticle ${particle.animationDuration}s infinite ease-in-out`,
-              animationDelay: `${particle.animationDelay}s`,
-              opacity: particle.opacity,
+              background: 'radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 248, 220, 0.6) 20%, rgba(237, 205, 103, 0.4) 40%, rgba(237, 205, 103, 0.15) 100%)',
+              animation: `float ${particle.duration}s ease-in-out infinite`,
+              animationDelay: `${particle.delay}s`,
+              boxShadow: deviceStyles.getParticleShadow(),
+              filter: deviceStyles.getParticleFilter(),
+              willChange: 'transform, opacity',
+              transform: 'translateZ(0)',
             }}
           />
         ))}
-
-        {/* Radiant Overlay */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `
-              radial-gradient(circle at 20% 30%, rgba(237, 205, 103, 0.28) 0%, rgba(255, 248, 220, 0.15) 30%, transparent 55%),
-              radial-gradient(circle at 80% 70%, rgba(255, 248, 220, 0.25) 0%, rgba(240, 219, 142, 0.12) 30%, transparent 55%),
-              radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08) 0%, rgba(237, 205, 103, 0.08) 40%, transparent 70%),
-              radial-gradient(circle at 10% 80%, rgba(255, 248, 220, 0.18) 0%, transparent 45%),
-              radial-gradient(circle at 90% 20%, rgba(255, 248, 220, 0.15) 0%, transparent 45%)
-            `,
-            pointerEvents: 'none'
-          }}
-        />
       </div>
 
       <style>{`
-        @keyframes floatParticle {
-          0%, 100% { transform: translate(0, 100vh) scale(1); }
-          50% { transform: translate(20px, 50vh) scale(1.2); }
+        @keyframes float {
+          0%, 100% {
+            transform: translate3d(0, 0, 0);
+            opacity: 0.4;
+          }
+          25% {
+            transform: translate3d(10px, -20px, 0);
+            opacity: 0.6;
+          }
+          50% {
+            transform: translate3d(-10px, -40px, 0);
+            opacity: 0.5;
+          }
+          75% {
+            transform: translate3d(-12px, -20px, 0);
+            opacity: 0.6;
+          }
+        }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(40px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .animate-on-scroll {
+          opacity: 0;
+        }
+
+        .animate-on-scroll.visible {
+          animation: fadeInUp 0.8s ease-out forwards;
         }
       `}</style>
 
@@ -109,53 +177,44 @@ export default function JadeBedRoomPage() {
       </nav>
 
       {/* Main Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 pb-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-12">
 
         {/* Header */}
-        <div className="text-center mb-16 lg:mb-24 mt-12">
+        <div className="text-center mb-12">
           <h1
-            className="font-display text-3xl lg:text-5xl tracking-wider mb-6"
+            className="font-display text-5xl lg:text-7xl tracking-wider mb-6"
             style={{
               color: colors.goldPrimary,
-              textShadow: `0 0 20px rgba(237, 205, 103, 0.6), 0 0 40px rgba(255, 248, 220, 0.3)`,
+              textShadow: '0 0 20px rgba(237, 205, 103, 0.6), 0 0 40px rgba(255, 248, 220, 0.3)',
               fontWeight: '300'
             }}
           >
-            AYA BODY ALTAR
+            Jade Bed Room
           </h1>
-          <p className="font-display text-base lg:text-lg tracking-wide" style={{ color: colors.goldSecondary, fontWeight: '300' }}>
-            Masaj & Beauty
+          <p
+            className="font-display text-lg lg:text-xl tracking-wide"
+            style={{ color: colors.goldSecondary, textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)', fontWeight: '300' }}
+          >
+            Terapie prin căldură și energie
           </p>
-
-          {/* Decorative horizontal line */}
-          <div
-            className="w-32 h-px mx-auto mt-8"
-            style={{
-              background: `linear-gradient(90deg, transparent, ${colors.goldPrimary}, transparent)`,
-              boxShadow: `0 0 20px ${colors.goldPrimary}`
-            }}
-          />
         </div>
 
         {/* Section 1: Intro text */}
-        <div className="max-w-3xl mx-auto text-center mb-20 lg:mb-32">
-          <p className="font-display text-base lg:text-lg leading-relaxed mb-4" style={{ fontWeight: '300' }}>
-            Aya Body Altar este un spațiu sacru dedicat corpului.
+        <div ref={ref1} className={`max-w-4xl mx-auto text-center mb-20 lg:mb-32 animate-on-scroll ${isVisible1 ? 'visible' : ''}`}>
+          <p className="font-display text-lg lg:text-xl leading-relaxed mb-6" style={{ color: colors.goldSecondary, fontWeight: '300' }}>
+            Patul de jad este o experiență terapeutică profundă, care combină căldura infraroșie, presiunea controlată și energia pietrelor de jad pentru a susține procesele naturale de regenerare ale corpului.
           </p>
-          <p className="font-display text-base lg:text-lg leading-relaxed mb-4" style={{ fontWeight: '300' }}>
-            Fiecare detaliu este gândit pentru relaxare, siguranță și reconectare profundă.
-          </p>
-          <p className="font-display text-base lg:text-lg leading-relaxed" style={{ color: colors.goldSecondary, fontWeight: '300' }}>
-            Aici corpul este ascultat, susținut și onorat.
+          <p className="font-display text-lg lg:text-xl leading-relaxed" style={{ color: colors.goldSecondary, fontWeight: '300' }}>
+            Jadul este cunoscut pentru proprietățile sale de echilibrare și armonizare energetică, iar căldura profundă pătrunde delicat în musculatură și țesuturi, favorizând relaxarea și detoxifierea.
           </p>
         </div>
 
         {/* Section 2: Images - side by side on desktop, stacked on mobile */}
-        <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 mb-20 lg:mb-32">
-          <div className="relative h-[400px] lg:h-[600px] overflow-hidden rounded-lg">
+        <div ref={ref2} className={`grid lg:grid-cols-2 gap-6 lg:gap-8 mb-20 lg:mb-32 animate-on-scroll ${isVisible2 ? 'visible' : ''}`}>
+          <div className="relative h-[400px] lg:h-[600px] overflow-hidden rounded-3xl">
             <img
               src="/images/new/jade1.webp"
-              alt="Aya Body Altar"
+              alt="Jade Bed Therapy"
               className="w-full h-full object-cover"
             />
             <div
@@ -165,10 +224,10 @@ export default function JadeBedRoomPage() {
               }}
             />
           </div>
-          <div className="relative h-[400px] lg:h-[600px] overflow-hidden rounded-lg">
+          <div className="relative h-[400px] lg:h-[600px] overflow-hidden rounded-3xl">
             <img
               src="/images/new/jade2.webp"
-              alt="Aya Beauty Vanity"
+              alt="Jade Bed Experience"
               className="w-full h-full object-cover"
             />
             <div
@@ -180,8 +239,58 @@ export default function JadeBedRoomPage() {
           </div>
         </div>
 
-        {/* Section 4: Centered statement with framing vertical lines */}
-        <div className="relative mb-20 lg:mb-32">
+        {/* Section 3: Therapy Benefits */}
+        <div
+          ref={ref3}
+          className={`rounded-3xl p-12 lg:p-16 max-w-5xl mx-auto relative mb-20 lg:mb-32 animate-on-scroll ${isVisible3 ? 'visible' : ''} ${deviceStyles.getBackdropClass()}`}
+          style={{
+            background: 'rgba(144, 174, 131, 0.3)',
+            border: `1px solid ${colors.goldPrimary}`,
+            boxShadow: '0 6px 25px rgba(0, 0, 0, 0.2), 0 0 50px rgba(237, 205, 103, 0.15)',
+            transform: 'translateZ(0)',
+          }}
+        >
+          <h2
+            className="font-display text-3xl lg:text-5xl mb-10 tracking-wide text-center"
+            style={{ color: colors.goldPrimary, textShadow: '0 2px 8px rgba(0, 0, 0, 0.2)', fontWeight: '300' }}
+          >
+            Patul de Jad – Terapie prin căldură, vibrație și energie
+          </h2>
+
+          <h3
+            className="font-display text-2xl lg:text-3xl mb-6 tracking-wide"
+            style={{ color: colors.goldPrimary, textShadow: '0 2px 8px rgba(0, 0, 0, 0.2)', fontWeight: '300' }}
+          >
+            Beneficii ale terapiei:
+          </h3>
+          <ul className="space-y-4 mb-8">
+            {[
+              "relaxare musculară profundă",
+              "stimularea circulației și a detoxifierii",
+              "reducerea tensiunilor și a stresului acumulat",
+              "susținerea echilibrului energetic al corpului"
+            ].map((benefit, index) => (
+              <li
+                key={index}
+                className="font-display text-lg lg:text-xl flex items-start gap-3"
+                style={{ color: colors.goldSecondary, fontWeight: '300' }}
+              >
+                <span style={{ color: colors.goldPrimary }}>•</span>
+                <span>{benefit}</span>
+              </li>
+            ))}
+          </ul>
+
+          <p
+            className="font-display text-lg lg:text-xl leading-relaxed text-center"
+            style={{ color: colors.goldSecondary, fontWeight: '300' }}
+          >
+            Este un ritual de odihnă activă, în care corpul se vindecă în liniște.
+          </p>
+        </div>
+
+        {/* Section 4: Final statement */}
+        <div ref={ref4} className={`relative mb-20 lg:mb-32 animate-on-scroll ${isVisible4 ? 'visible' : ''}`}>
           <div className="max-w-4xl mx-auto text-center relative py-12">
             {/* Left vertical line */}
             <div
@@ -209,7 +318,7 @@ export default function JadeBedRoomPage() {
                 fontWeight: '300'
               }}
             >
-              Un spațiu sacru dedicat corpului
+              Regenerare profundă prin căldură și echilibru energetic
             </p>
           </div>
         </div>

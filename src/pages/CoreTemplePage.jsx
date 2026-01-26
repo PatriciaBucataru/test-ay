@@ -1,6 +1,38 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getDeviceOptimizedStyles } from '../utils/deviceDetection';
+
+// Hook for scroll animations
+const useScrollAnimation = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px',
+      }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
+
+  return [ref, isVisible];
+};
 
 const GoldenParticles = () => {
   const [particles, setParticles] = useState([]);
@@ -38,6 +70,55 @@ const GoldenParticles = () => {
             transform: translate3d(-12px, -20px, 0);
             opacity: 0.6;
           }
+        }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(40px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes fadeInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-40px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes fadeInRight {
+          from {
+            opacity: 0;
+            transform: translateX(40px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        .animate-on-scroll {
+          opacity: 0;
+        }
+
+        .animate-on-scroll.visible {
+          animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .animate-on-scroll-left.visible {
+          animation: fadeInLeft 0.8s ease-out forwards;
+        }
+
+        .animate-on-scroll-right.visible {
+          animation: fadeInRight 0.8s ease-out forwards;
         }
       `}</style>
 
@@ -181,6 +262,16 @@ export default function CoreTemplePage() {
   const deviceStyles = getDeviceOptimizedStyles();
   const [showScrollTop, setShowScrollTop] = useState(true);
 
+  // Scroll animation refs
+  const [refCarousel, isVisibleCarousel] = useScrollAnimation();
+  const [ref1, isVisible1] = useScrollAnimation();
+  const [ref2, isVisible2] = useScrollAnimation();
+  const [ref3, isVisible3] = useScrollAnimation();
+  const [ref4, isVisible4] = useScrollAnimation();
+  const [ref5, isVisible5] = useScrollAnimation();
+  const [ref6, isVisible6] = useScrollAnimation();
+  const [ref7, isVisible7] = useScrollAnimation();
+
   const colors = {
     green: '#90ae83ff',
     goldPrimary: '#edcd67',
@@ -274,14 +365,78 @@ export default function CoreTemplePage() {
         </div>
 
         {/* Image Carousel */}
-        <div className="mb-16">
+        <div ref={refCarousel} className={`mb-16 animate-on-scroll ${isVisibleCarousel ? 'visible' : ''}`}>
           <ImageCarousel images={roomData.images} title={roomData.title} />
         </div>
 
         {/* Content Sections */}
         <div className="max-w-7xl mx-auto space-y-20">
+          {/* Section 1: Lagree - The Science */}
+          <div ref={ref1} className={`max-w-5xl mx-auto text-center animate-on-scroll ${isVisible1 ? 'visible' : ''}`}>
+            <h2
+              className="font-display text-3xl lg:text-5xl mb-10 tracking-wide"
+              style={{ color: colors.goldPrimary, textShadow: '0 2px 8px rgba(0, 0, 0, 0.2)', fontWeight: '300' }}
+            >
+              Lagree – The Science of Intelligent Strength
+            </h2>
+            <p
+              className="font-display text-lg lg:text-xl leading-relaxed mb-6"
+              style={{ color: colors.goldSecondary, fontWeight: '300' }}
+            >
+              Lagree este un sistem de antrenament de ultimă generație, recunoscut internațional pentru eficiența sa extraordinară. Bazat pe mișcări lente, controlate și rezistență continuă, Lagree activează simultan musculatura profundă, forța, echilibrul, flexibilitatea și rezistența cardiovasculară.
+            </p>
+          </div>
+
+          {/* Section 2: În The Core Temple - with features */}
+          <div
+            ref={ref2}
+            className={`rounded-[2rem] p-12 lg:p-16 max-w-5xl mx-auto relative animate-on-scroll ${isVisible2 ? 'visible' : ''} ${deviceStyles.getBackdropClass()}`}
+            style={{
+              background: 'rgba(144, 174, 131, 0.3)',
+              border: `1px solid ${colors.goldPrimary}`,
+              boxShadow: '0 6px 25px rgba(0, 0, 0, 0.2), 0 0 50px rgba(237, 205, 103, 0.15)',
+              transform: 'translateZ(0)',
+            }}
+          >
+            <h3
+              className="font-display text-2xl lg:text-3xl mb-8 tracking-wide"
+              style={{ color: colors.goldPrimary, textShadow: '0 2px 8px rgba(0, 0, 0, 0.2)', fontWeight: '300' }}
+            >
+              În The Core Temple lucrăm exclusiv pe aparate originale Megaformer, oferind un antrenament:
+            </h3>
+            <ul className="space-y-5">
+              {[
+                "cu impact redus asupra articulațiilor",
+                "extrem de intens pentru musculatura profundă",
+                "sigur, precis și adaptabil fiecărui nivel",
+                "orientat spre rezultate vizibile și durabile"
+              ].map((feature, index) => (
+                <li key={index} className="flex items-start gap-4">
+                  <span
+                    className="text-lg mt-1"
+                    style={{ color: colors.goldPrimary, filter: 'brightness(1.1)' }}
+                  >
+                    ✦
+                  </span>
+                  <span
+                    className="font-display text-lg lg:text-xl flex-1"
+                    style={{ color: colors.goldSecondary, fontWeight: '300' }}
+                  >
+                    {feature}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <p
+              className="font-display text-lg lg:text-xl leading-relaxed mt-8"
+              style={{ color: colors.goldPrimary, fontWeight: '300' }}
+            >
+              Lagree nu este doar fitness. Este o metodă care rescrie relația cu propriul corp — mai multă forță, mai mult control, mai multă prezență.
+            </p>
+          </div>
+
           {/* Intro Section - Floating text without boxes with vertical divider */}
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center max-w-6xl mx-auto relative">
+          <div ref={ref3} className={`grid lg:grid-cols-2 gap-12 lg:gap-20 items-center max-w-6xl mx-auto relative animate-on-scroll ${isVisible3 ? 'visible' : ''}`}>
             <div className="text-center lg:text-left lg:pr-8">
               <p
                 className="font-display text-lg lg:text-xl leading-relaxed"
@@ -313,7 +468,7 @@ export default function CoreTemplePage() {
           </div>
 
           {/* Image + Text Section - Grid Layout */}
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <div ref={ref4} className={`grid lg:grid-cols-2 gap-8 lg:gap-12 items-center animate-on-scroll ${isVisible4 ? 'visible' : ''}`}>
             {/* Image */}
             <div className="order-2 lg:order-1">
               <div
@@ -381,7 +536,7 @@ export default function CoreTemplePage() {
           </div>
 
           {/* Atmosfera Section - Minimalist, no box, with vertical lines */}
-          <div className="max-w-4xl mx-auto py-12 lg:py-20 relative">
+          <div ref={ref5} className={`max-w-4xl mx-auto py-12 lg:py-20 relative animate-on-scroll ${isVisible5 ? 'visible' : ''}`}>
             {/* Left vertical decorative line */}
             <div
               className="hidden lg:block absolute left-0 top-0 bottom-0 w-px"
@@ -435,6 +590,85 @@ export default function CoreTemplePage() {
                 className="w-full h-[350px] lg:h-[500px] object-cover"
                 loading="lazy"
               />
+            </div>
+          </div>
+
+          {/* Experiența The Core Temple Section */}
+          <div ref={ref6} className={`max-w-5xl mx-auto animate-on-scroll ${isVisible6 ? 'visible' : ''}`}>
+            <h2
+              className="font-display text-3xl lg:text-5xl mb-12 text-center tracking-wide"
+              style={{ color: colors.goldPrimary, textShadow: '0 2px 8px rgba(0, 0, 0, 0.2)', fontWeight: '300' }}
+            >
+              Experiența The Core Temple
+            </h2>
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <span className="text-lg mt-1" style={{ color: colors.goldPrimary }}>✦</span>
+                  <p className="font-display text-lg lg:text-xl" style={{ color: colors.goldSecondary, fontWeight: '300' }}>
+                    Clase în grup restrâns sau sesiuni private
+                  </p>
+                </div>
+                <div className="flex items-start gap-4">
+                  <span className="text-lg mt-1" style={{ color: colors.goldPrimary }}>✦</span>
+                  <p className="font-display text-lg lg:text-xl" style={{ color: colors.goldSecondary, fontWeight: '300' }}>
+                    Instructori certificați, atenție individuală
+                  </p>
+                </div>
+              </div>
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <span className="text-lg mt-1" style={{ color: colors.goldPrimary }}>✦</span>
+                  <p className="font-display text-lg lg:text-xl" style={{ color: colors.goldSecondary, fontWeight: '300' }}>
+                    Atmosferă premium, ritualică și focus total
+                  </p>
+                </div>
+                <div className="flex items-start gap-4">
+                  <span className="text-lg mt-1" style={{ color: colors.goldPrimary }}>✦</span>
+                  <p className="font-display text-lg lg:text-xl" style={{ color: colors.goldSecondary, fontWeight: '300' }}>
+                    Rezultate reale, fără agresivitate asupra corpului
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Final Statement */}
+          <div ref={ref7} className={`max-w-4xl mx-auto py-12 lg:py-20 relative animate-on-scroll ${isVisible7 ? 'visible' : ''}`}>
+            <div
+              className="hidden lg:block absolute left-0 top-0 bottom-0 w-px"
+              style={{
+                background: `linear-gradient(180deg, transparent, ${colors.goldPrimary}, transparent)`,
+                boxShadow: `0 0 20px ${colors.goldPrimary}`,
+              }}
+            />
+            <div
+              className="hidden lg:block absolute right-0 top-0 bottom-0 w-px"
+              style={{
+                background: `linear-gradient(180deg, transparent, ${colors.goldPrimary}, transparent)`,
+                boxShadow: `0 0 20px ${colors.goldPrimary}`,
+              }}
+            />
+            <div className="text-center space-y-10 px-8 lg:px-16">
+              <p
+                className="font-display text-3xl lg:text-5xl leading-relaxed tracking-wide"
+                style={{ color: colors.goldPrimary, textShadow: '0 3px 12px rgba(0, 0, 0, 0.4)', fontWeight: '300' }}
+              >
+                The Core Temple este locul unde forța devine liniște, iar disciplina devine artă.
+              </p>
+              <div
+                className="w-32 h-px mx-auto"
+                style={{
+                  background: `linear-gradient(90deg, transparent, ${colors.goldPrimary}, transparent)`,
+                  boxShadow: `0 0 20px ${colors.goldPrimary}`,
+                }}
+              />
+              <p
+                className="font-display text-lg lg:text-xl leading-relaxed"
+                style={{ color: colors.goldSecondary, fontWeight: '300' }}
+              >
+                Strength with awareness. Power with grace.
+              </p>
             </div>
           </div>
 

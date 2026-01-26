@@ -344,145 +344,255 @@ export default function OurRoomsPage() {
           {/* Row 1: Large Featured + Two Small */}
           <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
             {/* Large Featured Card - Core Temple */}
-            <Link
-              to={rooms[0].path}
+            <div
+              onClick={() => window.location.href = rooms[0].path}
               className="lg:col-span-2 group relative rounded-[2rem] overflow-hidden h-[400px] lg:h-[600px]"
               style={{
-                boxShadow: '0 8px 40px rgba(0, 0, 0, 0.25), 0 0 60px rgba(237, 205, 103, 0.15)',
+                boxShadow: '0 8px 40px rgba(0, 0, 0, 0.25), 0 0 60px rgba(237, 205, 103, 0.6), 0 0 100px rgba(255, 248, 220, 0.4), inset 0 0 80px rgba(237, 205, 103, 0.15)',
+                border: `2px solid ${colors.goldPrimary}`,
+                cursor: 'pointer',
               }}
             >
-              <ImageCarousel images={rooms[0].images} title={rooms[0].title} />
+              <img
+                src={rooms[0].images[0]}
+                alt={rooms[0].title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              {/* Bottom to top gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              {/* Subtle glowy overlay */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: `radial-gradient(circle at 50% 80%, rgba(237, 205, 103, 0.08) 0%, transparent 60%),
+                               radial-gradient(circle at 30% 30%, rgba(255, 248, 220, 0.06) 0%, transparent 50%)`
+                }}
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
               <div className="absolute bottom-0 left-0 right-0 p-8 lg:p-12">
                 <h2
                   className="font-display text-3xl lg:text-5xl font-light mb-2"
-                  style={{ color: colors.goldPrimary, textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)' }}
+                  style={{
+                    color: colors.goldPrimary,
+                    textShadow: '0 0 20px rgba(237, 205, 103, 0.8), 0 0 40px rgba(255, 248, 220, 0.4), 0 2px 8px rgba(0, 0, 0, 0.5)'
+                  }}
                 >
                   {rooms[0].title}
                 </h2>
                 <p
                   className="font-display text-lg lg:text-xl italic"
-                  style={{ color: colors.goldSecondary }}
+                  style={{
+                    color: colors.goldSecondary,
+                    textShadow: '0 0 15px rgba(240, 219, 142, 0.6), 0 2px 4px rgba(0, 0, 0, 0.5)'
+                  }}
                 >
                   {rooms[0].subtitle}
                 </p>
               </div>
-            </Link>
+            </div>
 
             {/* Two Small Cards Stacked */}
             <div className="space-y-6 lg:space-y-8">
               {[rooms[1], rooms[2]].map((room) => (
-                <Link
+                <div
                   key={room.id}
-                  to={room.path}
-                  className="block group relative rounded-[2rem] overflow-hidden h-[280px]"
+                  onClick={() => window.location.href = room.path}
+                  className="group relative rounded-[2rem] overflow-hidden h-[280px]"
                   style={{
-                    boxShadow: '0 6px 30px rgba(0, 0, 0, 0.2), 0 0 50px rgba(237, 205, 103, 0.1)',
+                    boxShadow: '0 8px 40px rgba(0, 0, 0, 0.25), 0 0 60px rgba(237, 205, 103, 0.6), 0 0 100px rgba(255, 248, 220, 0.4), inset 0 0 80px rgba(237, 205, 103, 0.15)',
+                    border: `2px solid ${colors.goldPrimary}`,
+                    cursor: 'pointer',
                   }}
                 >
-                  <ImageCarousel images={room.images} title={room.title} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+                  <img
+                    src={room.images[0]}
+                    alt={room.title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  {/* Bottom to top gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  {/* Subtle glowy overlay */}
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                      background: `radial-gradient(circle at 50% 80%, rgba(237, 205, 103, 0.08) 0%, transparent 60%),
+                                   radial-gradient(circle at 30% 30%, rgba(255, 248, 220, 0.06) 0%, transparent 50%)`
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
                   <div className="absolute bottom-0 left-0 right-0 p-6">
                     <h3
-                      className="font-display text-2xl font-light mb-2"
-                      style={{ color: colors.goldPrimary, textShadow: '0 2px 6px rgba(0, 0, 0, 0.5)' }}
+                      className="font-display text-3xl lg:text-5xl font-light mb-2"
+                      style={{
+                        color: colors.goldPrimary,
+                        textShadow: '0 0 20px rgba(237, 205, 103, 0.8), 0 0 40px rgba(255, 248, 220, 0.4), 0 2px 8px rgba(0, 0, 0, 0.5)'
+                      }}
                     >
                       {room.title}
                     </h3>
                     <p
-                      className="font-display text-base italic"
-                      style={{ color: colors.goldSecondary }}
+                      className="font-display text-lg lg:text-xl italic"
+                      style={{
+                        color: colors.goldSecondary,
+                        textShadow: '0 0 15px rgba(240, 219, 142, 0.6), 0 2px 4px rgba(0, 0, 0, 0.5)'
+                      }}
                     >
                       {room.subtitle}
                     </p>
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           </div>
 
-          {/* Row 2: Wide Card */}
-          <Link
-            to={rooms[3].path}
-            className="block group relative rounded-[2rem] overflow-hidden h-[350px] lg:h-[450px]"
+          {/* Row 2: Wide Card - Jade Bed Room */}
+          <div
+            onClick={() => window.location.href = rooms[3].path}
+            className="group relative rounded-[2rem] overflow-hidden h-[350px] lg:h-[450px]"
             style={{
-              boxShadow: '0 8px 40px rgba(0, 0, 0, 0.25), 0 0 60px rgba(237, 205, 103, 0.15)',
+              boxShadow: '0 8px 40px rgba(0, 0, 0, 0.25), 0 0 60px rgba(237, 205, 103, 0.6), 0 0 100px rgba(255, 248, 220, 0.4), inset 0 0 80px rgba(237, 205, 103, 0.15)',
+              border: `2px solid ${colors.goldPrimary}`,
+              cursor: 'pointer',
             }}
           >
-            <ImageCarousel images={rooms[3].images} title={rooms[3].title} />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 p-8 lg:p-16 max-w-2xl">
+            <img
+              src={rooms[3].images[0]}
+              alt={rooms[3].title}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            {/* Bottom to top gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            {/* Subtle glowy overlay */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: `radial-gradient(circle at 50% 80%, rgba(237, 205, 103, 0.08) 0%, transparent 60%),
+                             radial-gradient(circle at 30% 30%, rgba(255, 248, 220, 0.06) 0%, transparent 50%)`
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+            <div className="absolute bottom-0 left-0 right-0 p-8 lg:p-12">
               <h2
-                className="font-display text-4xl lg:text-5xl font-light mb-3"
-                style={{ color: colors.goldPrimary, textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)' }}
+                className="font-display text-3xl lg:text-5xl font-light mb-2"
+                style={{
+                  color: colors.goldPrimary,
+                  textShadow: '0 0 20px rgba(237, 205, 103, 0.8), 0 0 40px rgba(255, 248, 220, 0.4), 0 2px 8px rgba(0, 0, 0, 0.5)'
+                }}
               >
                 {rooms[3].title}
               </h2>
               <p
-                className="font-display text-xl italic"
-                style={{ color: colors.goldSecondary }}
+                className="font-display text-lg lg:text-xl italic"
+                style={{
+                  color: colors.goldSecondary,
+                  textShadow: '0 0 15px rgba(240, 219, 142, 0.6), 0 2px 4px rgba(0, 0, 0, 0.5)'
+                }}
               >
                 {rooms[3].subtitle}
               </p>
             </div>
-          </Link>
+          </div>
 
           {/* Row 3: Tall + Two Medium */}
           <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
-            {/* Tall Card */}
-            <Link
-              to={rooms[4].path}
-              className="block group relative rounded-[2rem] overflow-hidden h-[500px] lg:h-[700px]"
+            {/* Tall Card - Beauty Rituals */}
+            <div
+              onClick={() => window.location.href = rooms[4].path}
+              className="group relative rounded-[2rem] overflow-hidden h-[500px] lg:h-[700px]"
               style={{
-                boxShadow: '0 8px 40px rgba(0, 0, 0, 0.25), 0 0 60px rgba(237, 205, 103, 0.15)',
+                boxShadow: '0 8px 40px rgba(0, 0, 0, 0.25), 0 0 60px rgba(237, 205, 103, 0.6), 0 0 100px rgba(255, 248, 220, 0.4), inset 0 0 80px rgba(237, 205, 103, 0.15)',
+                border: `2px solid ${colors.goldPrimary}`,
+                cursor: 'pointer',
               }}
             >
-              <ImageCarousel images={rooms[4].images} title={rooms[4].title} />
+              <img
+                src={rooms[4].images[0]}
+                alt={rooms[4].title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              {/* Bottom to top gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              {/* Subtle glowy overlay */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: `radial-gradient(circle at 50% 80%, rgba(237, 205, 103, 0.08) 0%, transparent 60%),
+                               radial-gradient(circle at 30% 30%, rgba(255, 248, 220, 0.06) 0%, transparent 50%)`
+                }}
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
               <div className="absolute bottom-0 left-0 right-0 p-8">
                 <h2
-                  className="font-display text-3xl font-light mb-2"
-                  style={{ color: colors.goldPrimary, textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)' }}
+                  className="font-display text-3xl lg:text-5xl font-light mb-2"
+                  style={{
+                    color: colors.goldPrimary,
+                    textShadow: '0 0 20px rgba(237, 205, 103, 0.8), 0 0 40px rgba(255, 248, 220, 0.4), 0 2px 8px rgba(0, 0, 0, 0.5)'
+                  }}
                 >
                   {rooms[4].title}
                 </h2>
                 <p
-                  className="font-display text-lg italic"
-                  style={{ color: colors.goldSecondary }}
+                  className="font-display text-lg lg:text-xl italic"
+                  style={{
+                    color: colors.goldSecondary,
+                    textShadow: '0 0 15px rgba(240, 219, 142, 0.6), 0 2px 4px rgba(0, 0, 0, 0.5)'
+                  }}
                 >
                   {rooms[4].subtitle}
                 </p>
               </div>
-            </Link>
+            </div>
 
             {/* Two Medium Cards */}
             <div className="lg:col-span-2 grid gap-6 lg:gap-8">
               {[rooms[5], rooms[6]].map((room) => (
-                <Link
+                <div
                   key={room.id}
-                  to={room.path}
-                  className="block group relative rounded-[2rem] overflow-hidden h-[330px]"
+                  onClick={() => window.location.href = room.path}
+                  className="group relative rounded-[2rem] overflow-hidden h-[330px]"
                   style={{
-                    boxShadow: '0 6px 30px rgba(0, 0, 0, 0.2), 0 0 50px rgba(237, 205, 103, 0.1)',
+                    boxShadow: '0 8px 40px rgba(0, 0, 0, 0.25), 0 0 60px rgba(237, 205, 103, 0.6), 0 0 100px rgba(255, 248, 220, 0.4), inset 0 0 80px rgba(237, 205, 103, 0.15)',
+                    border: `2px solid ${colors.goldPrimary}`,
+                    cursor: 'pointer',
                   }}
                 >
-                  <ImageCarousel images={room.images} title={room.title} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+                  <img
+                    src={room.images[0]}
+                    alt={room.title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  {/* Bottom to top gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  {/* Subtle glowy overlay */}
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                      background: `radial-gradient(circle at 50% 80%, rgba(237, 205, 103, 0.08) 0%, transparent 60%),
+                                   radial-gradient(circle at 30% 30%, rgba(255, 248, 220, 0.06) 0%, transparent 50%)`
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
                   <div className="absolute bottom-0 left-0 right-0 p-8">
                     <h3
-                      className="font-display text-2xl lg:text-3xl font-light mb-2"
-                      style={{ color: colors.goldPrimary, textShadow: '0 2px 6px rgba(0, 0, 0, 0.5)' }}
+                      className="font-display text-3xl lg:text-5xl font-light mb-2"
+                      style={{
+                        color: colors.goldPrimary,
+                        textShadow: '0 0 20px rgba(237, 205, 103, 0.8), 0 0 40px rgba(255, 248, 220, 0.4), 0 2px 8px rgba(0, 0, 0, 0.5)'
+                      }}
                     >
                       {room.title}
                     </h3>
                     <p
-                      className="font-display text-lg italic"
-                      style={{ color: colors.goldSecondary }}
+                      className="font-display text-lg lg:text-xl italic"
+                      style={{
+                        color: colors.goldSecondary,
+                        textShadow: '0 0 15px rgba(240, 219, 142, 0.6), 0 2px 4px rgba(0, 0, 0, 0.5)'
+                      }}
                     >
                       {room.subtitle}
                     </p>
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           </div>

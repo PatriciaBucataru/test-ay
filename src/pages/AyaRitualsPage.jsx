@@ -1,6 +1,38 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { getDeviceOptimizedStyles } from '../utils/deviceDetection';
+
+// Hook for scroll animations
+const useScrollAnimation = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px',
+      }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
+
+  return [ref, isVisible];
+};
 
 export default function AyaRitualsPage() {
   const colors = {
@@ -13,108 +45,320 @@ export default function AyaRitualsPage() {
   // Golden Particles Effect
   const [particles, setParticles] = useState([]);
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  // Scroll animation refs
+  const [ref1, isVisible1] = useScrollAnimation();
+  const [ref2, isVisible2] = useScrollAnimation();
+  const [ref3, isVisible3] = useScrollAnimation();
+  const [ref4, isVisible4] = useScrollAnimation();
+  const [ref5, isVisible5] = useScrollAnimation();
+
   useEffect(() => {
+    // Scroll to top on page load
+    window.scrollTo(0, 0);
+
     const newParticles = Array.from({ length: deviceStyles.particleCount * 1.5 }, (_, i) => ({
       id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
       size: Math.random() * 5 + 3,
-      left: Math.random() * 100,
-      animationDuration: Math.random() * 20 + 15,
-      animationDelay: Math.random() * 5,
-      opacity: Math.random() * 0.4 + 0.2,
+      duration: Math.random() * 10 + 6,
+      delay: Math.random() * 5
     }));
     setParticles(newParticles);
   }, [deviceStyles.particleCount]);
 
   return (
     <div
-      className="min-h-screen text-white relative overflow-hidden"
+      className="min-h-screen relative overflow-hidden"
       style={{
         background: 'linear-gradient(135deg, #8b9e7d 0%, #7a8d6e 25%, #6b7c5e 50%, #5e6f50 75%, #5a6b4d 100%)',
       }}
     >
-      {/* Golden Particles */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {particles.map((particle) => (
+      {/* Radiant light overlay */}
+      <div
+        className="fixed inset-0 pointer-events-none z-0"
+        style={{
+          background: 'radial-gradient(circle at 20% 30%, rgba(237, 205, 103, 0.32) 0%, rgba(255, 248, 220, 0.18) 30%, transparent 55%), radial-gradient(circle at 80% 70%, rgba(255, 248, 220, 0.30) 0%, rgba(237, 205, 103, 0.15) 30%, transparent 55%), radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.10) 0%, transparent 65%), radial-gradient(circle at 10% 80%, rgba(255, 248, 220, 0.22) 0%, transparent 45%), radial-gradient(circle at 90% 20%, rgba(255, 248, 220, 0.18) 0%, transparent 45%)',
+          transform: 'translateZ(0)',
+        }}
+      />
+
+      {/* Animated particles */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        {particles.map(particle => (
           <div
             key={particle.id}
-            className="absolute rounded-full opacity-60"
+            className="absolute rounded-full"
             style={{
+              left: `${particle.x}%`,
+              top: `${particle.y}%`,
               width: `${particle.size}px`,
               height: `${particle.size}px`,
-              left: `${particle.left}%`,
-              background: `radial-gradient(circle, rgba(255, 255, 255, 0.9), ${colors.goldPrimary}, ${colors.goldSecondary})`,
-              boxShadow: `0 0 ${particle.size * 3}px ${colors.goldPrimary}, 0 0 ${particle.size * 5}px rgba(255, 248, 220, 0.4)`,
-              animation: `floatParticle ${particle.animationDuration}s infinite ease-in-out`,
-              animationDelay: `${particle.animationDelay}s`,
-              opacity: particle.opacity,
+              background: 'radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 248, 220, 0.6) 20%, rgba(237, 205, 103, 0.4) 40%, rgba(237, 205, 103, 0.15) 100%)',
+              animation: `float ${particle.duration}s ease-in-out infinite`,
+              animationDelay: `${particle.delay}s`,
+              boxShadow: deviceStyles.getParticleShadow(),
+              filter: deviceStyles.getParticleFilter(),
+              willChange: 'transform, opacity',
+              transform: 'translateZ(0)',
             }}
           />
         ))}
-
-        {/* Radiant Overlay */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `
-              radial-gradient(circle at 20% 30%, rgba(237, 205, 103, 0.28) 0%, rgba(255, 248, 220, 0.15) 30%, transparent 55%),
-              radial-gradient(circle at 80% 70%, rgba(255, 248, 220, 0.25) 0%, rgba(240, 219, 142, 0.12) 30%, transparent 55%),
-              radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08) 0%, rgba(237, 205, 103, 0.08) 40%, transparent 70%),
-              radial-gradient(circle at 10% 80%, rgba(255, 248, 220, 0.18) 0%, transparent 45%),
-              radial-gradient(circle at 90% 20%, rgba(255, 248, 220, 0.15) 0%, transparent 45%)
-            `,
-            pointerEvents: 'none'
-          }}
-        />
       </div>
 
       <style>{`
-        @keyframes floatParticle {
-          0%, 100% { transform: translate(0, 100vh) scale(1); }
-          50% { transform: translate(20px, 50vh) scale(1.2); }
+        @keyframes float {
+          0%, 100% {
+            transform: translate3d(0, 0, 0);
+            opacity: 0.4;
+          }
+          25% {
+            transform: translate3d(10px, -20px, 0);
+            opacity: 0.6;
+          }
+          50% {
+            transform: translate3d(-10px, -40px, 0);
+            opacity: 0.5;
+          }
+          75% {
+            transform: translate3d(-12px, -20px, 0);
+            opacity: 0.6;
+          }
+        }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(40px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .animate-on-scroll {
+          opacity: 0;
+        }
+
+        .animate-on-scroll.visible {
+          animation: fadeInUp 0.8s ease-out forwards;
         }
       `}</style>
 
-      {/* Navigation */}
-      <nav className="relative z-10 p-6 lg:p-8">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 transition-all duration-300 hover:gap-4"
-          style={{ color: colors.goldPrimary }}
-        >
-          <span className="text-2xl">←</span>
-          <span className="text-sm tracking-wider">BACK TO HOME</span>
-        </Link>
+      {/* Navigation Header */}
+      <nav className="relative z-10 py-6 border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+            <img
+              src="/images/logo pn.png"
+              alt="House of Aya"
+              className="w-10 h-10"
+              style={{ filter: 'drop-shadow(0 0 10px rgba(237, 205, 103, 0.7))' }}
+            />
+            <span
+              className="font-display text-xl"
+              style={{ color: colors.goldPrimary, textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)' }}
+            >
+              HOUSE OF AYA
+            </span>
+          </Link>
+          <Link
+            to="/our-rooms"
+            className="font-body text-sm tracking-wider transition-colors"
+            style={{ color: colors.goldSecondary, textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)' }}
+          >
+            ← Înapoi
+          </Link>
+        </div>
       </nav>
 
       {/* Main Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 pb-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-12">
 
         {/* Header */}
-        <div className="text-center mb-16 lg:mb-24">
+        <div className="text-center mb-12">
           <h1
-            className="text-5xl lg:text-7xl font-light tracking-wider mb-4"
+            className="font-display text-5xl lg:text-7xl tracking-wider mb-6"
             style={{
               color: colors.goldPrimary,
-              textShadow: `0 0 30px ${colors.goldPrimary}80, 0 0 60px ${colors.goldPrimary}40`
+              textShadow: '0 0 20px rgba(237, 205, 103, 0.6), 0 0 40px rgba(255, 248, 220, 0.3)',
+              fontWeight: '300'
             }}
           >
-            AYA RITUAL COUNTER
+            The Stillness Chamber
           </h1>
-          <p className="text-xl lg:text-2xl tracking-wide" style={{ color: colors.goldSecondary }}>
-            Ritual Bar
+          <p
+            className="font-display text-lg lg:text-xl tracking-wide"
+            style={{ color: colors.goldSecondary, textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)', fontWeight: '300' }}
+          >
+            Sala de Yoga
           </p>
-
-          {/* Decorative horizontal line */}
-          <div
-            className="w-32 h-px mx-auto mt-8"
-            style={{
-              background: `linear-gradient(90deg, transparent, ${colors.goldPrimary}, transparent)`,
-              boxShadow: `0 0 20px ${colors.goldPrimary}`
-            }}
-          />
         </div>
 
-        {/* Section 1: Opening statement - centered with framing */}
+        {/* Section 1: Intro text */}
+        <div ref={ref1} className={`max-w-4xl mx-auto text-center mb-20 lg:mb-32 animate-on-scroll ${isVisible1 ? 'visible' : ''}`}>
+          <p className="font-display text-lg lg:text-xl leading-relaxed mb-6" style={{ color: colors.goldSecondary, fontWeight: '300' }}>
+            The Stillness Chamber este spațiul liniștii profunde din House of Aya.
+            Un sanctuar dedicat respirației, prezenței și reconectării cu sine, unde corpul se deschide blând, iar mintea se așază.
+          </p>
+          <p className="font-display text-lg lg:text-xl leading-relaxed mb-6" style={{ color: colors.goldSecondary, fontWeight: '300' }}>
+            Aici, yoga nu este performanță.
+            Este ascultare, aliniere și întoarcere la ritmul interior.
+          </p>
+          <p className="font-display text-lg lg:text-xl leading-relaxed" style={{ color: colors.goldSecondary, fontWeight: '300' }}>
+            Lumina, tăcerea, mișcarea lentă și respirația conștientă creează un cadru în care fiecare practică devine un ritual. Un spațiu sigur, elegant și profund, în care timpul încetinește, iar tu te reîntâlnești cu tine.
+          </p>
+        </div>
+
+        {/* Section 2: Images side by side */}
+        <div ref={ref2} className={`grid lg:grid-cols-2 gap-6 lg:gap-8 mb-20 lg:mb-32 animate-on-scroll ${isVisible2 ? 'visible' : ''}`}>
+          <div className="relative h-[400px] lg:h-[600px] overflow-hidden rounded-3xl">
+            <img
+              src="/images/new/up1.webp"
+              alt="The Stillness Chamber"
+              className="w-full h-full object-cover"
+            />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: `linear-gradient(180deg, rgba(90, 107, 77, 0.15) 0%, transparent 30%, transparent 70%, rgba(90, 107, 77, 0.2) 100%)`
+              }}
+            />
+          </div>
+          <div className="relative h-[400px] lg:h-[600px] overflow-hidden rounded-3xl">
+            <img
+              src="/images/new/up2.webp"
+              alt="Yoga Practice"
+              className="w-full h-full object-cover"
+            />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: `radial-gradient(circle at 30% 50%, rgba(237, 205, 103, 0.12) 0%, transparent 60%)`
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Section 3: Yoga Content */}
+        <div
+          ref={ref3}
+          className={`rounded-3xl p-12 lg:p-16 max-w-5xl mx-auto relative mb-20 lg:mb-32 animate-on-scroll ${isVisible3 ? 'visible' : ''} ${deviceStyles.getBackdropClass()}`}
+          style={{
+            background: 'rgba(144, 174, 131, 0.3)',
+            border: `1px solid ${colors.goldPrimary}`,
+            boxShadow: '0 6px 25px rgba(0, 0, 0, 0.2), 0 0 50px rgba(237, 205, 103, 0.15)',
+            transform: 'translateZ(0)',
+          }}
+        >
+          <h2
+            className="font-display text-3xl lg:text-5xl mb-10 tracking-wide text-center"
+            style={{ color: colors.goldPrimary, textShadow: '0 2px 8px rgba(0, 0, 0, 0.2)', fontWeight: '300' }}
+          >
+            Yoga – Arta prezenței
+          </h2>
+          <p
+            className="font-display text-lg lg:text-xl leading-relaxed mb-8"
+            style={{ color: colors.goldSecondary, fontWeight: '300' }}
+          >
+            Practica yoga în The Stillness Chamber este ghidată cu grijă și respect față de corp și emoții.
+            Fiecare clasă este construită pentru a susține echilibrul dintre flexibilitate, stabilitate, respirație și claritate mentală.
+          </p>
+
+          <h3
+            className="font-display text-2xl lg:text-3xl mb-6 tracking-wide"
+            style={{ color: colors.goldPrimary, textShadow: '0 2px 8px rgba(0, 0, 0, 0.2)', fontWeight: '300' }}
+          >
+            Beneficii ale practicii:
+          </h3>
+          <ul className="space-y-4 mb-8">
+            {[
+              "eliberarea tensiunilor fizice și emoționale",
+              "reglarea sistemului nervos",
+              "creșterea mobilității și a conștientizării corporale",
+              "liniște interioară și claritate mentală"
+            ].map((benefit, index) => (
+              <li
+                key={index}
+                className="font-display text-lg lg:text-xl flex items-start gap-3"
+                style={{ color: colors.goldSecondary, fontWeight: '300' }}
+              >
+                <span style={{ color: colors.goldPrimary }}>•</span>
+                <span>{benefit}</span>
+              </li>
+            ))}
+          </ul>
+
+          <p
+            className="font-display text-lg lg:text-xl leading-relaxed text-center"
+            style={{ color: colors.goldSecondary, fontWeight: '300' }}
+          >
+            Yoga devine aici un instrument de armonizare, nu un efort.
+          </p>
+        </div>
+
+        {/* Section 4: Large image */}
+        <div ref={ref4} className={`relative mb-20 lg:mb-32 animate-on-scroll ${isVisible4 ? 'visible' : ''}`}>
+          <div className="relative h-[400px] lg:h-[600px] overflow-hidden rounded-3xl">
+            <img
+              src="/images/new/up3.webp"
+              alt="Stillness Chamber Experience"
+              className="w-full h-full object-cover"
+            />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: `linear-gradient(180deg, rgba(90, 107, 77, 0.15) 0%, transparent 30%, transparent 70%, rgba(90, 107, 77, 0.2) 100%)`
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Section 5: Experience */}
+        <div ref={ref5} className={`max-w-5xl mx-auto mb-20 lg:mb-32 animate-on-scroll ${isVisible5 ? 'visible' : ''}`}>
+          <h2
+            className="font-display text-3xl lg:text-5xl mb-12 tracking-wide text-center"
+            style={{ color: colors.goldPrimary, textShadow: '0 2px 8px rgba(0, 0, 0, 0.2)', fontWeight: '300' }}
+          >
+            Experiența The Stillness Chamber
+          </h2>
+
+          <div className="grid lg:grid-cols-2 gap-8 mb-12">
+            {[
+              "Clase în grup restrâns, într-un ritm blând și conștient",
+              "Instructori dedicați, prezenți și atenți",
+              "Spațiu premium, intim și sacru",
+              "Practici care susțin atât corpul, cât și sufletul"
+            ].map((item, index) => (
+              <div key={index} className="flex items-start gap-4">
+                <span style={{ color: colors.goldPrimary, fontSize: '1.5rem' }}>•</span>
+                <p
+                  className="font-display text-lg lg:text-xl leading-relaxed"
+                  style={{ color: colors.goldSecondary, fontWeight: '300' }}
+                >
+                  {item}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <p
+            className="font-display text-lg lg:text-xl leading-relaxed text-center mb-8"
+            style={{ color: colors.goldSecondary, fontWeight: '300' }}
+          >
+            The Stillness Chamber este locul unde respirația te aduce acasă.
+          </p>
+        </div>
+
+        {/* Section 6: Final statement */}
         <div className="relative mb-20 lg:mb-32">
           <div className="max-w-4xl mx-auto text-center relative py-12">
             {/* Left vertical line */}
@@ -136,147 +380,40 @@ export default function AyaRitualsPage() {
             />
 
             <p
-              className="text-2xl lg:text-4xl font-light leading-relaxed tracking-wide mb-8"
+              className="font-display text-3xl lg:text-5xl leading-relaxed tracking-wide"
               style={{
                 color: colors.goldPrimary,
-                textShadow: `0 0 30px ${colors.goldPrimary}40`
+                textShadow: `0 0 30px ${colors.goldPrimary}40`,
+                fontWeight: '300'
               }}
             >
-              Aya Ritual Counter este barul sacru al energiei curate.
-            </p>
-          </div>
-        </div>
-
-        {/* Section 2: Wide image */}
-        <div className="mb-20 lg:mb-32">
-          <div className="relative h-[350px] lg:h-[550px] overflow-hidden rounded-lg">
-            <img
-              src="/images/new/up1.webp"
-              alt="Aya Ritual Counter"
-              className="w-full h-full object-cover"
-            />
-            <div
-              className="absolute inset-0"
-              style={{
-                background: 'linear-gradient(to top, rgba(90, 107, 77, 0.6), transparent 60%)'
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Section 3: Two-column content with vertical divider */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 mb-20 lg:mb-32 relative">
-          <div>
-            <p className="text-lg lg:text-xl leading-relaxed mb-6">
-              Aici se servesc shake-uri funcționale Aya, matcha, cafea atent preparată, ceaiuri, cookies Aya și ciocolată selectată pentru echilibru și vitalitate.
-            </p>
-          </div>
-
-          <div>
-            <p className="text-lg lg:text-xl leading-relaxed mb-6" style={{ color: colors.goldSecondary }}>
-              Este un spațiu de integrare după practică, de socializare blândă și reîncărcare.
-            </p>
-            <p className="text-lg lg:text-xl leading-relaxed">
-              Fiecare produs Aya este ales cu intenție.
-            </p>
-          </div>
-
-          {/* Vertical divider line */}
-          <div
-            className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px"
-            style={{
-              background: `linear-gradient(180deg, transparent, ${colors.goldPrimary}, transparent)`,
-              boxShadow: `0 0 20px ${colors.goldPrimary}`,
-            }}
-          />
-        </div>
-
-        {/* Section 4: Image grid - 2 images side by side */}
-        <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 mb-20 lg:mb-32">
-          <div className="relative h-[300px] lg:h-[450px] overflow-hidden rounded-lg">
-            <img
-              src="/images/new/up2.webp"
-              alt="Ritual Bar Space"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="relative h-[300px] lg:h-[450px] overflow-hidden rounded-lg">
-            <img
-              src="/images/new/up3.webp"
-              alt="Ritual Counter Details"
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-
-        {/* Section 5: Philosophy statement - offset with vertical line */}
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 mb-20 lg:mb-32 relative">
-          <div className="lg:col-span-2"></div>
-
-          <div className="lg:col-span-9">
-            <div className="relative">
-              {/* Decorative vertical line on left */}
-              <div
-                className="hidden lg:block absolute -left-8 top-0 bottom-0 w-px"
-                style={{
-                  background: `linear-gradient(180deg, transparent, ${colors.goldPrimary}, ${colors.goldPrimary}, transparent)`,
-                  boxShadow: `0 0 20px ${colors.goldPrimary}`,
-                }}
-              />
-
-              <div
-                className="p-8 lg:p-12 rounded-lg"
-                style={{
-                  background: 'rgba(144, 174, 131, 0.25)',
-                  border: `1px solid ${colors.goldPrimary}40`,
-                  boxShadow: `0 0 40px ${colors.goldPrimary}20, inset 0 0 40px ${colors.goldPrimary}10`
-                }}
-              >
-                <p
-                  className="text-2xl lg:text-3xl font-light leading-relaxed tracking-wide"
-                  style={{
-                    color: colors.goldPrimary,
-                    textShadow: `0 0 20px ${colors.goldPrimary}40`
-                  }}
-                >
-                  Spațiu de integrare, socializare blândă și reîncărcare
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="lg:col-span-1"></div>
-        </div>
-
-        {/* Final overlay banner */}
-        <div className="relative -mx-6 lg:-mx-12">
-          <div
-            className="relative h-[200px] lg:h-[280px] flex items-center justify-center overflow-hidden"
-            style={{
-              background: `linear-gradient(135deg, rgba(139, 158, 125, 0.4), rgba(107, 124, 94, 0.4))`,
-              borderTop: `1px solid ${colors.goldPrimary}30`,
-              borderBottom: `1px solid ${colors.goldPrimary}30`,
-            }}
-          >
-            <div
-              className="absolute inset-0"
-              style={{
-                background: `radial-gradient(circle at center, ${colors.goldPrimary}15, transparent 70%)`
-              }}
-            />
-            <p
-              className="relative text-2xl lg:text-4xl font-light tracking-widest text-center px-8"
-              style={{
-                color: colors.goldPrimary,
-                textShadow: `0 0 40px ${colors.goldPrimary}80, 0 0 80px ${colors.goldPrimary}40`
-              }}
-            >
-              Energie curată, aleasă cu intenție
+              Breathe. Soften. Return to yourself.
             </p>
           </div>
         </div>
 
       </div>
+
+      {/* Scroll to Top Button */}
+      <button
+        onClick={scrollToTop}
+        className="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+        style={{
+          background: `linear-gradient(135deg, ${colors.goldPrimary}, ${colors.goldSecondary})`,
+          boxShadow: `0 4px 20px rgba(237, 205, 103, 0.4), 0 0 30px rgba(237, 205, 103, 0.3)`,
+        }}
+        aria-label="Scroll to top"
+      >
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="rgba(90, 107, 77, 0.9)"
+          strokeWidth="2.5"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+        </svg>
+      </button>
     </div>
   );
 }
